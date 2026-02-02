@@ -1,0 +1,39 @@
+.content-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding-top: 200px;
+}
+
+.lead {
+  text-align: justify;
+}
+
+.book-img {
+  width: 100%;
+  max-width: 550px;
+  height: auto;
+}
+
+.text {
+  border-left: 9px solid #0d6dfdc0;
+}
+
+.page-content {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    font-size: 1em;
+  }
+}
