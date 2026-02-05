@@ -1,105 +1,181 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My Library - Gallery</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/gallery.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/gallery.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<div id="navbar-placeholder"></div>
+  </head>
 
+  <body class="bg-body-tertiary">
+    <div id="navbar-placeholder"></div>
 
-<body class="bg-body-tertiary ">
-   <div id="navbar-placeholder"></div>
+    <section class="container my-5 pt-5 page-content">
+      <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">
+          My Library<span class="text-primary">/ Gallery</span>
+        </h1>
+        <p class="lead text-muted">
+          Explore our full collection across all floors.
+        </p>
+      </div>
 
-    <section class="container my-5 pt-5">
-        <div class="text-center mb-5">
-            <h1 class="display-5 fw-bold">My Library<span class="text-primary">/ Gallery</span></h1>
-            <p class="lead text-muted">Explore our full collection across all floors.</p>
+      <div class="row g-4">
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500"
+              class="card-img-top gallery-img"
+              alt="Shelf"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">New Arrivals</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/42/d4/d0/42d4d0d2eb7a64585069b2cfe8fb426e.jpg"
+              class="card-img-top gallery-img"
+              alt="Books"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Classic Literature</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/e5/44/2c/e5442cc1350fc38150996676e9f73ef9.jpg"
+              class="card-img-top gallery-img"
+              alt="Library"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Fantasy</p>
+            </div>
+          </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                     <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500" class="card-img-top gallery-img" alt="Shelf">
-                    <div class="card-body text-center"><p class="fw-bold m-0">New Arrivals</p></div>
-                </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/1200x/ab/b4/03/abb4034b8dadc06cb33a2398c0b5c557.jpg"
+              class="card-img-top gallery-img"
+              alt="Reading"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Romance</p>
             </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/42/d4/d0/42d4d0d2eb7a64585069b2cfe8fb426e.jpg" class="card-img-top gallery-img" alt="Books">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Classic Literature</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                   <img src="https://i.pinimg.com/736x/e5/44/2c/e5442cc1350fc38150996676e9f73ef9.jpg" class="card-img-top gallery-img" alt="Library">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Fantasy</p></div>
-                </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/1200x/ab/b4/03/abb4034b8dadc06cb33a2398c0b5c557.jpg" class="card-img-top gallery-img" alt="Reading">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Romance</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/df/7d/b4/df7db4b34f1679a440952f583c728ae6.jpg" class="card-img-top gallery-img" alt="Archives">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Sci-Fi</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/8b/b1/7a/8bb17ad4e009c8ad6432b6bd64cc57bc.jpg" class="card-img-top gallery-img" alt="Students">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Mystery/Thriller</p></div>
-                </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/1200x/60/06/c3/6006c3840e54bb830ba92a2cd0d4ac63.jpg" class="card-img-top gallery-img" alt="Education">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Horror</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/1200x/24/4c/48/244c487995bdfee691d62234f974fdf0.jpg" class="card-img-top gallery-img" alt="Fiction">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Children’s books</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/ff/64/47/ff64476183a7843f8f6094023cfc2034.jpg" class="card-img-top gallery-img" alt="Magazines">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Learning Resources</p></div>
-                </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/474x/60/89/00/608900b3fcc5d1e7b743cd2b409d77a5.jpg" class="card-img-top gallery-img" alt="Science">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Action & Adventure</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/7e/96/ef/7e96ef3f243f71ae0b0438f3619afa37.jpg" class="card-img-top gallery-img" alt="Writing">
-                    <div class="card-body text-center"><p class="fw-bold m-0">History & Religion</p></div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100 border-0 shadow-sm gallery-card">
-                    <img src="https://i.pinimg.com/736x/f7/c9/a9/f7c9a96902a0c87aa1660b4137583cc1.jpg" class="card-img-top gallery-img" alt="Quiet">
-                    <div class="card-body text-center"><p class="fw-bold m-0">Must-read books</p></div>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/df/7d/b4/df7db4b34f1679a440952f583c728ae6.jpg"
+              class="card-img-top gallery-img"
+              alt="Archives"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Sci-Fi</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/8b/b1/7a/8bb17ad4e009c8ad6432b6bd64cc57bc.jpg"
+              class="card-img-top gallery-img"
+              alt="Students"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Mystery/Thriller</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/1200x/60/06/c3/6006c3840e54bb830ba92a2cd0d4ac63.jpg"
+              class="card-img-top gallery-img"
+              alt="Education"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Horror</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/1200x/24/4c/48/244c487995bdfee691d62234f974fdf0.jpg"
+              class="card-img-top gallery-img"
+              alt="Fiction"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Children’s books</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/ff/64/47/ff64476183a7843f8f6094023cfc2034.jpg"
+              class="card-img-top gallery-img"
+              alt="Magazines"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Learning Resources</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/474x/60/89/00/608900b3fcc5d1e7b743cd2b409d77a5.jpg"
+              class="card-img-top gallery-img"
+              alt="Science"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Action & Adventure</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/7e/96/ef/7e96ef3f243f71ae0b0438f3619afa37.jpg"
+              class="card-img-top gallery-img"
+              alt="Writing"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">History & Religion</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="card h-100 border-0 shadow-sm gallery-card">
+            <img
+              src="https://i.pinimg.com/736x/f7/c9/a9/f7c9a96902a0c87aa1660b4137583cc1.jpg"
+              class="card-img-top gallery-img"
+              alt="Quiet"
+            />
+            <div class="card-body text-center">
+              <p class="fw-bold m-0">Must-read books</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <script src="/script/navigatonJS.js"></script>
-</body>
+    <script src="../script/navigatonJS.js"></script>
+  </body>
 </html>
