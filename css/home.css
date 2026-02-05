@@ -15,10 +15,6 @@
   height: auto;
 }
 
-.text {
-  border-left: 9px solid #0d6dfdc0;
-}
-
 .page-content {
   opacity: 0;
   transform: translateY(15px);
