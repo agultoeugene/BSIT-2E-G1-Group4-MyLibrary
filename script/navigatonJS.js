@@ -1,5 +1,5 @@
 function toInclude() {
-  fetch("navbar.html")
+  fetch("../pages/navbar.html")
     .then((response) => response.text())
     .then((data) => {
       document.getElementById("navbar-placeholder").innerHTML = data;
@@ -7,7 +7,7 @@ function toInclude() {
       const current = location.pathname.split("/").pop();
       const links = document.querySelectorAll(".nav-link");
       links.forEach((link) => {
-        if (link.getAttribute("href") === current) {
+        if (link.getAttribute("href").includes(current)) {
           link.classList.add("active");
         }
       });
