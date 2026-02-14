@@ -1,20 +1,3 @@
-function toInclude() {
-  fetch("../pages/navbar.html")
-    .then((response) => response.text())
-    .then((data) => {
-      document.getElementById("navbar-placeholder").innerHTML = data;
-
-      const current = location.pathname.split("/").pop();
-      const links = document.querySelectorAll(".nav-link");
-      links.forEach((link) => {
-        if (link.getAttribute("href").includes(current)) {
-          link.classList.add("active");
-        }
-      });
-    });
-}
-document.addEventListener("DOMContentLoaded", toInclude);
-
 function login() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
