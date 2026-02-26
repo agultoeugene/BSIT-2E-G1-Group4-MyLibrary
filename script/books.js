@@ -196,15 +196,25 @@ function saveBook(
         dueDate,
         description
     });
+
     displayBooks();
     clearForm();
 
-    // Properly hide modal
-    let modalEl = document.getElementById("addBookModal");
-    let modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-    modal.hide();
+    const modalEl = document.getElementById("addBookModal");
+    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+    modalInstance.hide(); 
 }
-
+function clearForm() {
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("isbn").value = "";
+    document.getElementById("genre").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("availability").value = "Available";
+    document.getElementById("publisher").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("cover").value = "";
+}
 function displayBooks() {
     let container = document.getElementById("bookContainer");
     container.innerHTML = "";
