@@ -3,14 +3,19 @@
   height: 250px;
   object-fit: cover;
   display: block;
+  object-position: top;
   border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
+  border-top-right-radius: 0.25rem; 
 }
 
 .card {
   width: 100%;
   max-width: 350px;
   margin: 0.5rem auto;
+}
+
+.card:hover {
+    transform: translateY(-5px); /*adds a lift effect when hovering*/
 }
 
 .card-body {
