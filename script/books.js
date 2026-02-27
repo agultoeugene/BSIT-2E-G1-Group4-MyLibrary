@@ -252,6 +252,7 @@ function showBookModal(index) {
     document.getElementById("viewLocation").innerText = book.location;
     document.getElementById("viewPublisher").innerText = book.publisher;
     document.getElementById("viewDescription").innerText = book.description;
+    const due = document.getElementById("dueDate");
 
     let statusEl = document.getElementById("viewStatus");
     statusEl.innerText = book.availability;
@@ -265,6 +266,11 @@ function showBookModal(index) {
     } else {
         statusEl.style.color = "orange";
         statusEl.style.fontWeight = "bold";
+    }
+    if(book.dueDate === ""){
+        due.innerText = "N/A";
+    }else{
+        due.innerText = book.dueDate;
     }
 
     let myModal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
