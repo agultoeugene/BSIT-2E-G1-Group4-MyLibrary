@@ -179,7 +179,7 @@ function addBook() {
     if (!isValid) {
         return;
     }
-
+    
 
     // Use placeholder if no file uploaded
     let cover = "https://via.placeholder.com/300x400";
@@ -248,6 +248,17 @@ function saveBook(
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
     modalInstance.hide(); 
 }
+function clearError(inputId, errorId) {
+    const input = document.getElementById(inputId);
+    const error = document.getElementById(errorId);
+
+    input.addEventListener("input", function () {
+        if (input.value.trim() !== "") {
+            error.innerText = "";
+        }
+    });
+}
+
 function clearForm() {
     document.getElementById("title").value = "";
     document.getElementById("author").value = "";
@@ -420,3 +431,11 @@ if (document.readyState === "loading") {
 } else {
     executeSearchFromURL();
 }
+document.addEventListener("DOMContentLoaded", function () {
+    clearError("title", "errTitle");
+    clearError("author", "errAuthor");
+    clearError("isbn", "errIsbn");
+    clearError("genre", "errGenre");
+    clearError("location", "errLoc");
+    clearError("description", "errDesc");
+});
