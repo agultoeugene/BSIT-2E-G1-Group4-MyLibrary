@@ -134,8 +134,52 @@ function addBook() {
     let publisher = document.getElementById("publisher")?.value.trim() || "Unknown";
     let dueDate = document.getElementById("dueDate")?.value || "";
 
+
+     var errTitle = document.getElementById("errTitle");
+    var errAuthor = document.getElementById("errAuthor");
+    var errIsbn = document.getElementById("errIsbn");
+    var errGenre = document.getElementById("errGenre");
+    var errLoc = document.getElementById("errLoc");
+    var errDesc = document.getElementById("errDesc");
+    let isValid = true;
+
     let fileInput = document.getElementById("cover");
     let file = fileInput.files[0];
+
+    if (title == "") {
+        errTitle.innerText = "Book title is required";
+        isValid = false;
+       
+    }
+    
+    if (author == "") {
+        errAuthor.innerText = "Author name is required";
+        isValid = false;
+    }
+
+    if (isbn == "") {
+        errIsbn.innerText = "Please enter the ISBN";
+        isValid = false;
+    }
+
+     if (genre == "") {
+        errGenre.innerText = "Please enter the Genre";
+        isValid = false;
+    }
+      if (location == "") {
+        errLoc.innerText = "Library Location is required";
+        isValid = false;
+    }
+
+      if (description == "") {
+        errDesc.innerText = "Please enter the Short Description";
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return;
+    }
+
 
     // Use placeholder if no file uploaded
     let cover = "https://via.placeholder.com/300x400";
