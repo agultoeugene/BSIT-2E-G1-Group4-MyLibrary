@@ -35,8 +35,8 @@
                     <a class="nav-link" href="#">Borrow Books</a>
                 </div>
             </div>
-            <form class="d-none d-lg-flex search-box" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Book" />
+            <form class="d-none d-lg-flex search-box" role="search" onsubmit="handleSearch(event, false)">
+                <input class="form-control me-2" type="search" placeholder="Search Book" oninput="handleLiveSearch(event)" />
                 <button class="btn btn-outline-primary" type="submit">
             <i class="bi bi-search"></i>
           </button>
@@ -44,8 +44,8 @@
         </div>
     </nav>
     <div class="collapse bg-body-tertiary px-3 pb-3 pt-2 d-lg-none" id="mobileSearch">
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search Book" />
+        <form class="d-flex" onsubmit="handleSearch(event, false)">
+            <input class="form-control me-2" type="search" placeholder="Search Book" oninput="handleLiveSearch(event)" />
             <button class="btn btn-outline-primary" type="submit">
           <i class="bi bi-search"></i>
         </button>

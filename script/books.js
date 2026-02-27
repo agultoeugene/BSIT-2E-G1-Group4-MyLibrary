@@ -270,3 +270,103 @@ function showBookModal(index) {
     let myModal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
     myModal.show();
 }
+
+// Flexible search functionality
+function searchBooks(query) {
+    if (!query.trim()) {
+        displayBooks();
+        return;
+    }
+
+    const searchTerm = query.toLowerCase();
+    const filteredBooks = books.filter(book => {
+        return (
+            book.title.toLowerCase().includes(searchTerm) ||
+            book.author.toLowerCase().includes(searchTerm) ||
+            book.genre.toLowerCase().includes(searchTerm) ||
+            book.isbn.toLowerCase().includes(searchTerm) ||
+            book.publisher.toLowerCase().includes(searchTerm) ||
+            book.location.toLowerCase().includes(searchTerm) ||
+            book.availability.toLowerCase().includes(searchTerm) ||
+            book.description.toLowerCase().includes(searchTerm)
+        );
+    });
+
+    displaySearchResults(filteredBooks, query);
+}
+
+function displaySearchResults(filteredBooks, query) {
+    let container = document.getElementById("bookContainer");
+    container.innerHTML = "";
+
+    if (filteredBooks.length === 0) {
+        container.innerHTML = `
+            <div class="col-12 text-center mt-5">
+                <h4 class="text-muted">Books not found</h4>
+                <p class="text-secondary">No books match your search for "${query}"</p>
+                <button class="btn btn-primary mt-3" onclick="clearSearch()">Clear Search</button>
+            </div>
+        `;
+        return;
+    }
+
+    filteredBooks.forEach((book, originalIndex) => {
+        let actualIndex = books.indexOf(book);
+        let badgeClass = "";
+        if (book.availability === "Available") badgeClass = "bg-success";
+        else if (book.availability === "Reserved") badgeClass = "bg-warning text-dark";
+        else if (book.availability === "Borrowed") badgeClass = "bg-danger";
+
+        container.innerHTML += `
+            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center mb-3">
+                <div class="card shadow-sm" style="cursor:pointer;" onclick="showBookModal(${actualIndex})">
+                    <img src="${book.cover}" class="card-img-top book-img">
+                    <div class="card-body text-center">
+                        <h5>${book.title}</h5>
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Status:</strong> <span class="badge ${badgeClass}">${book.availability}</span></p>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function clearSearch() {
+    let searchInputs = document.querySelectorAll("input[type='search']");
+    searchInputs.forEach(input => input.value = "");
+    displayBooks();
+}
+
+function handleLiveSearch(event) {
+    let query = event.target.value.trim();
+    searchBooks(query);
+}
+
+function handleSearch(event, isFromDashboard = false) {
+    event.preventDefault();
+    let searchInput = event.target.querySelector("input[type='search']");
+    let query = searchInput.value.trim();
+
+    if (isFromDashboard && query) {
+
+        window.location.href = "../pages/book.html?search=" + encodeURIComponent(query);
+    }
+}
+
+function executeSearchFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const searchQuery = params.get("search");
+
+    if (searchQuery) {
+        let searchInputs = document.querySelectorAll("input[type='search']");
+        searchInputs.forEach(input => input.value = searchQuery);
+        searchBooks(searchQuery);
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", executeSearchFromURL);
+} else {
+    executeSearchFromURL();
+}

@@ -59,7 +59,7 @@
             <a class="nav-link" href="#">Borrow Books</a>
           </div>
         </div>
-        <form class="d-none d-lg-flex search-box" role="search">
+        <form class="d-none d-lg-flex search-box" role="search" onsubmit="handleSearch(event, true)">
           <input
             class="form-control me-2"
             type="search"
@@ -75,7 +75,7 @@
       class="collapse bg-body-tertiary px-3 pb-3 pt-2 d-lg-none"
       id="mobileSearch"
     >
-      <form class="d-flex">
+      <form class="d-flex" onsubmit="handleSearch(event, true)">
         <input
           class="form-control me-2"
           type="search"
@@ -150,5 +150,6 @@
         </div>
       </div>
     </div>
+    <script src="../script/books.js"></script>
   </body>
 </html>
