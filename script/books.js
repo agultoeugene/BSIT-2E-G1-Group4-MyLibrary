@@ -241,3 +241,32 @@ function displayBooks() {
     }); 
 }
 
+function showBookModal(index) {
+    let book = books[index];
+
+    document.getElementById("viewCover").src = book.cover;
+    document.getElementById("viewTitle").innerText = book.title;
+    document.getElementById("viewAuthor").innerText = book.author;
+    document.getElementById("viewIsbn").innerText = book.isbn;
+    document.getElementById("viewGenre").innerText = book.genre;
+    document.getElementById("viewLocation").innerText = book.location;
+    document.getElementById("viewPublisher").innerText = book.publisher;
+    document.getElementById("viewDescription").innerText = book.description;
+
+    let statusEl = document.getElementById("viewStatus");
+    statusEl.innerText = book.availability;
+    
+    if (book.availability === "Available") {
+        statusEl.style.color = "green";
+        statusEl.style.fontWeight = "bold";
+    } else if (book.availability === "Borrowed") {
+        statusEl.style.color = "red";
+        statusEl.style.fontWeight = "bold";
+    } else {
+        statusEl.style.color = "orange";
+        statusEl.style.fontWeight = "bold";
+    }
+
+    let myModal = new bootstrap.Modal(document.getElementById('bookDetailsModal'));
+    myModal.show();
+}
