@@ -410,8 +410,7 @@ function handleSearch(event, isFromDashboard = false) {
     let query = searchInput.value.trim();
 
     if (isFromDashboard && query) {
-
-        window.location.href = "../pages/book.html?search=" + encodeURIComponent(query);
+        window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/pages/book.php?search=" + encodeURIComponent(query);
     }
 }
 

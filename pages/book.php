@@ -1,3 +1,5 @@
+<?php $currentPage = basename($_SERVER['PHP_SELF']);?>
+<?php include("navbar.php"); ?>
 <!doctype html>
 <html lang="en">
 
@@ -6,52 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Library - Book</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/nav.css" />
     <link rel="stylesheet" href="../assets/book.css" />
     <title>My Library - Category</title>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg nav-container py-4 bg-body-tertiary fixed-top">
-        <div class="container-fluid d-flex align-items-center justify-content-between">
-            <a class="logo" href="#">My LIBRARY/</a>
-
-            <div class="d-flex align-items-center gap-3 d-lg-none">
-                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch">
-            <i class="bi bi-search fs-5"></i>
-          </button>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-            </div>
-
-            <div class="collapse navbar-collapse justify-content-lg-center" id="navbarNavAltMarkup">
-                <div class="navbar-nav link-container gap-5">
-                    <a class="nav-link" href="../pages/dashboard.html">Dashboard</a>
-                    <a class="nav-link active" href="../pages/book.html">Books</a>
-                    <a class="nav-link" href="#">Student</a>
-                    <a class="nav-link" href="#">Borrow Books</a>
-                </div>
-            </div>
-            <form class="d-none d-lg-flex search-box" role="search" onsubmit="handleSearch(event, false)">
-                <input class="form-control me-2" type="search" placeholder="Search Book" oninput="handleLiveSearch(event)" />
-                <button class="btn btn-outline-primary" type="submit">
-            <i class="bi bi-search"></i>
-          </button>
-            </form>
-        </div>
-    </nav>
-    <div class="collapse bg-body-tertiary px-3 pb-3 pt-2 d-lg-none" id="mobileSearch">
-        <form class="d-flex" onsubmit="handleSearch(event, false)">
-            <input class="form-control me-2" type="search" placeholder="Search Book" oninput="handleLiveSearch(event)" />
-            <button class="btn btn-outline-primary" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
-        </form>
-    </div>
-    <div class="container mt-1 pt-1">
+  
+    <div class="container mt-1 pt-1 page-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Book List</h3>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
