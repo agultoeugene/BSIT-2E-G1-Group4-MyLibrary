@@ -14,7 +14,7 @@
       </button>
 
     </div>
-
+    <?php $currentPage = basename($_SERVER['PHP_SELF']);?>
     <div class="collapse navbar-collapse justify-content-lg-center" id="navbarNavAltMarkup">
       <div class="navbar-nav link-container gap-5">
         <a class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/index.php">Dashboard</a>

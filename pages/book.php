@@ -1,4 +1,4 @@
-<?php $currentPage = basename($_SERVER['PHP_SELF']);?>
+
 <?php include("navbar.php"); ?>
 <!doctype html>
 <html lang="en">
