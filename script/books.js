@@ -143,6 +143,13 @@ function addBook() {
     var errDesc = document.getElementById("errDesc");
     let isValid = true;
 
+    errTitle.innerText = "";
+    errAuthor.innerText = "";
+    errIsbn.innerText = "";
+    errGenre.innerText = "";
+    errLoc.innerText = "";
+    errDesc.innerText = "";
+
     let fileInput = document.getElementById("cover");
     let file = fileInput.files[0];
 
@@ -270,6 +277,7 @@ function clearForm() {
     document.getElementById("description").value = "";
     document.getElementById("cover").value = "";
 }
+
 function displayBooks() {
     let container = document.getElementById("bookContainer");
     container.innerHTML = "";
@@ -431,10 +439,33 @@ if (document.readyState === "loading") {
     executeSearchFromURL();
 }
 document.addEventListener("DOMContentLoaded", function () {
+
     clearError("title", "errTitle");
     clearError("author", "errAuthor");
     clearError("isbn", "errIsbn");
     clearError("genre", "errGenre");
     clearError("location", "errLoc");
     clearError("description", "errDesc");
+
+
+    const addBookModal = document.getElementById("addBookModal");
+    if (addBookModal) {
+        addBookModal.addEventListener("hidden.bs.modal", function () {
+            document.getElementById("title").value = "";
+            document.getElementById("author").value = "";
+            document.getElementById("isbn").value = "";
+            document.getElementById("genre").value = "";
+            document.getElementById("location").value = "";
+            document.getElementById("availability").value = "Available";
+            document.getElementById("publisher").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("cover").value = "";
+
+            const errorIds = ["errTitle","errAuthor","errIsbn","errGenre","errLoc","errDesc"];
+            errorIds.forEach(id => {
+                const ids = document.getElementById(id);
+                if (ids) el.innerText = "";
+            });
+        });
+    }
 });

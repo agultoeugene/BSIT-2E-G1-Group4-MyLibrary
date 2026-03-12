@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg nav-container py-4 bg-body-tertiary fixed-top">
   <div class="container-fluid d-flex align-items-center justify-content-between">
 
@@ -14,7 +15,13 @@
       </button>
 
     </div>
-    <?php $currentPage = basename($_SERVER['PHP_SELF']);?>
+    <?php 
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        $placeholder = "Search Book";
+          if ($currentPage == "student.php") {
+              $placeholder = "Search Student";
+          }
+    ?>
     <div class="collapse navbar-collapse justify-content-lg-center" id="navbarNavAltMarkup">
       <div class="navbar-nav link-container gap-5">
         <a class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/index.php">Dashboard</a>
@@ -29,7 +36,7 @@
       <input 
         class="form-control me-2"
         type="search"
-        placeholder="Search Book"
+        placeholder="<?php echo $placeholder; ?>"
         oninput="handleLiveSearch(event)"
       >
       <button class="btn btn-outline-primary" type="submit">
