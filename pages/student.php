@@ -20,7 +20,22 @@
             </button>
         </div>
 
-        <div class="row g-4" id="studentContainer"></div>
+      <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-center">Name</th>
+            <th class="text-center">Student Number</th>
+            <th class="text-center">Year</th>
+            <th class="text-center">Course</th>
+            <th class="text-center">College</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody id="studentTableBody"></tbody>
+</table>
+
+
+
     </div>
 
     <!-- Add Student Modal -->

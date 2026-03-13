@@ -27,6 +27,25 @@ function addStudent() {
     if (!isValid) return; 
 
     students.push({ name, number, yearGrade, course, college });
+    let table = document.getElementById("studentTableBody");
+
+    let row = `
+    <tr>
+    <td class="text-center">${name}</td>
+    <td class="text-center">${number}</td>
+    <td class="text-center">${yearGrade}</td>
+    <td class="text-center">${course}</td>
+    <td class="text-center">${college}</td>
+    <td class="text-center">
+        <button class="btn btn-danger btn-sm" onclick="deleteStudent(this)">
+            Delete
+        </button>
+    </td>
+    </tr>
+    `;
+
+    table.innerHTML += row;
+
     clearForm();
     const modalEl = document.getElementById("addStudentModal");
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -66,3 +85,12 @@ document.getElementById("college").addEventListener("input", () => {
 });
 const addModalEl = document.getElementById("addStudentModal");
 addModalEl.addEventListener("hidden.bs.modal", clearForm);
+
+function deleteStudent(button){
+
+    let row = button.parentElement.parentElement;
+
+    row.remove();
+
+}
+
