@@ -1,0 +1,30 @@
+#bookListContainer {
+    max-height: 300px; 
+    overflow-y: auto;
+    padding: 0 !important;
+}
+
+/*Fixes the issue about the check box being outside don sa choose book(s)*/
+#bookListContainer .form-check {
+    display: flex !important;
+    align-items: center !important;
+    padding-left: 35px !important; 
+    margin: 0;
+    width: 100%;
+}
+
+#bookListContainer .form-check-input {
+    margin-left: -25px !important; 
+    float: none !important; 
+    position: static !important; 
+    margin-top: 0 !important;
+}
+
+#bookListContainer li { 
+    list-style: none;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#bookListContainer li:last-child {
+    border-bottom: none;
+}

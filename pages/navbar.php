@@ -50,6 +50,7 @@
 <div class="collapse bg-body-tertiary px-3 pb-3 pt-2 d-lg-none" id="mobileSearch">
   <form class="d-flex" onsubmit="handleSearch(event, true)">
     <input 
+      id="searchInput"
       class="form-control me-2"
       type="search"
       placeholder="Search Book"
