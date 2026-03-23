@@ -1,0 +1,42 @@
+.book-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  object-position: top;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem; 
+}
+
+.card {
+  width: 100%;
+  max-width: 350px;
+  margin: 0.5rem auto;
+}
+
+.card:hover {
+    transform: translateY(-5px); 
+}
+
+.card-body {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.card h5 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.card p {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+#modalCover {
+    height: 300px;      
+    object-fit: cover;  
+    width: auto;         
+    max-width: 100%;  
+}

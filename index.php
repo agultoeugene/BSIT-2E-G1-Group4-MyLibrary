@@ -1,89 +1,59 @@
+<?php
+  include("frontend/includes/navigation.php");
+?> 
 
-<?php include("pages/navbar.php"); ?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Library - Dashboard</title>
+    <title>My Library - Home</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-    />
-    <link rel="stylesheet" href="assets/nav.css" />
-    <link rel="stylesheet" href="assets/dash.css" />
+    <link rel="stylesheet" href="frontend/assets/css/home.css" />
+    <link rel="stylesheet" href="frontend/assets/css/navigation.css">
   </head>
 
   <body class="bg-body-tertiary">
-    <div class="container mt-3 pt-5 page-content">
-      <h1 class="mb-4 text-primary text-center">Dashboard Overview</h1>
-      <div class="row g-4">
-        <!-- Box 1 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-1">
-            <div class="card-body align-content-center text-center">
-              <h4 class="text-muted">Total Books</h4>
-              <h2 class="fw-bold">0</h2>
-            </div>
+    <section class="content-container d-flex align-items-center page-content">
+      <div class="container">
+        <div class="row align-items-center min-vh-75">
+          <div class="col-lg-6 text-center text-lg-start text">
+            <h1 class="display-4 fw-bold">
+              Welcome to <span class="text-primary">My Library</span>
+            </h1>
+            <h2>— Your Gateway to Knowledge</h2>
+            <p class="lead fs-4">
+              Welcome, Librarian! This page serves as your central dashboard for
+              managing student borrowings. Here, you can see and track all the
+              books that students are allowed to borrow from the library. It
+              helps you stay organized, monitor which titles are currently
+              borrowed or available, and ensure that every student has access to
+              the resources they need. By using this page, you can efficiently
+              manage lending, plan for returns, and maintain the library’s
+              collection in an orderly and accessible way. Think of this as your
+              main control center for overseeing student reading activity and
+              keeping the library running smoothly.
+            </p>
           </div>
-        </div>
-
-        <!-- Box 2 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-2">
-            <div class="card-body text-center align-content-center">
-              <h4 class="text-muted">Total Categories</h4>
-              <h2 class="fw-bold">0</h2>
-            </div>
-          </div>
-        </div>
-
-        <!-- Box 3 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-3">
-            <div class="card-body text-center align-content-center">
-              <h4 class="text-muted">Total Students</h4>
-              <h2 class="fw-bold">0</h2>
-            </div>
-          </div>
-        </div>
-
-        <!-- Box 4 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-4">
-            <div class="card-body text-center align-content-center">
-              <h4 class="text-muted">Borrowed Books</h4>
-              <h2 class="fw-bold text-warning">0</h2>
-            </div>
-          </div>
-        </div>
-
-        <!-- Box 5 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-5">
-            <div class="card-body text-center align-content-center">
-              <h4 class="text-muted">Available Books</h4>
-              <h2 class="fw-bold text-success">0</h2>
-            </div>
-          </div>
-        </div>
-
-        <!-- Box 6 -->
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card shadow-sm dashboard-card box-6">
-            <div class="card-body text-center align-content-center">
-              <h4 class="text-muted">Overdue Books</h4>
-              <h2 class="fw-bold text-danger">0</h2>
-            </div>
+          <div class="col-lg-6 text-center mt-4 mt-lg-0">
+            <img
+              src="https://www.bravetomorrow.net/uploads/2/3/2/6/23261028/published/6920931.png?1694459042"
+              class="img-fluid book-img"
+              alt="Stack of Books"
+            />
           </div>
         </div>
       </div>
-    </div>
-    <script src="script/books.js"></script>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script>
+    <script src="frontend/assets/script/login.js"></script> 
+    <script src="frontend/assets/script/register.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
   </body>
 </html>
