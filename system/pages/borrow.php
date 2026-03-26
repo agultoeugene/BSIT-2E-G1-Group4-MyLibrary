@@ -27,7 +27,11 @@
                        <button class="btn btn-outline-primary dropdown-toggle w-100 d-flex align-items-center justify-content-between" type="button" id="studentButton" data-bs-toggle="dropdown">
                         Select a Student
                        </button>
-                          <ul class="dropdown-menu w-100 shadow" id="studentListContainer" style="max-height: 250px; overflow-y: auto;"></ul>
+                          <ul class="dropdown-menu w-100 shadow" id="studentListContainer" style="max-height: 250px; overflow-y: auto;">
+                             <li class="px-3 py-2">
+                                <input type="search" class="form-control form-control-sm" id="studentSearchInput" placeholder="Search student">
+                            </li>
+                          </ul>
                   </div>
                 <div id="studentNumber-error" class="text-danger small mt-1" style="display: none;">Please select a student.</div>
              </div>
@@ -39,18 +43,7 @@
                             <button class="btn btn-primary dropdown-toggle w-100 d-flex align-items-center justify-content-between" type="button" id="genreButton" data-bs-toggle="dropdown">
                              Genre
                             </button>
-                            <ul class="dropdown-menu w-100 shadow">
-                                <li><a class="dropdown-item genre-item" href="#">Adventure</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Art</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Cooking</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Education</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">History</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Lifestyle</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Mystery</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Science</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Science Fiction</a></li>
-                                <li><a class="dropdown-item genre-item" href="#">Self-Help</a></li>
-                            </ul>
+                            <ul class="dropdown-menu w-100 shadow" id="genreListContainer"></ul>
                         </div>
                         <div id="genre-error" class="text-danger small mt-1" style="display: none;">Please select a genre.</div>
                     </div>
@@ -128,7 +121,7 @@
 
     <div class="mt-4 d-flex justify-content-center gap-3">
         <button class="btn btn-outline-secondary px-5" onclick="goToStep(1)">Back</button>
-        <button class="btn btn-primary px-5" onclick="goToStep(3)">Confirm</button>
+        <button class="btn btn-primary px-5"  onclick="saveTransaction()">Confirm</button>
     </div>
 </div>
    
@@ -163,5 +156,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/scripts/borrow/borrow.js"></script>
+    <script src="../assets/scripts/Books/displayBook.js"></script>
  
 </html>

@@ -36,7 +36,8 @@
 
       <div class="modal-body">
         <div class="row g-3">
-
+          
+        <input type="hidden" id="book_id">
           <div class="col-md-6">
             <label for="title" class="form-label">Book Title</label>
             <input type="text" id="title" class="form-control" />
@@ -58,7 +59,7 @@
           <div class="col-md-6">
             <label for="genre" class="form-label">Genre</label>
             <input type="text" id="genre" class="form-control" />
-              <small class="text-danger" id="errGenre"></small>
+            <small class="text-danger" id="errGenre"></small>
           </div>
 
           <div class="col-md-6">
@@ -71,9 +72,15 @@
             <label for="availability" class="form-label">Availability</label>
             <select id="availability" class="form-select">
               <option value="Available">Available</option>
-              <option value="Reserved">Reserved</option>
-              <option value="Borrowed">Borrowed</option>
+              <option value="Not Available">Not Available</option>
+
             </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" id="quantity" class="form-control" min="1" />
+            <small class="text-danger" id="errQuantity"></small>
           </div>
 
           <div class="col-md-6">
@@ -91,15 +98,16 @@
             <textarea id="description" class="form-control" rows="3"></textarea>
           <small class="text-danger" id="errDesc"></small>
           </div>
-
+          <input type="hidden" id="originalCover">
         </div>
+        
       </div>
 
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="addBook()">
-             Save Book
-        </button>
+        <button type="button" class="btn btn-primary" onclick="saveBook()">
+          Save Book
+      </button>
       </div>
 
     </div>
@@ -115,17 +123,21 @@
       </div>
       <div class="modal-body text-center">
         <img id="viewCover" src="" class="img-fluid mb-3" style="max-height: 250px; border-radius: 5px;" alt="Book Cover">
-        
+
         <h3 id="viewTitle" class="fw-bold"></h3>
         <p class="mb-1"><strong>Author:</strong> <span id="viewAuthor"></span></p>
         <p class="mb-1"><strong>ISBN:</strong> <span id="viewIsbn"></span></p>
         <p class="mb-1"><strong>Genre:</strong> <span id="viewGenre"></span></p>
         <p class="mb-1"><strong>Location:</strong> <span id="viewLocation"></span></p>
         <p class="mb-1"><strong>Publisher:</strong> <span id="viewPublisher"></span></p>
-         <p class="mb-3"><strong>Due Date:</strong> <span id="dueDate"></span></p>
-        <p class="mb-3"><strong>Availability:</strong> <span id="viewStatus"></span></p>
-        
+
+        <p class="mb-3"><strong>Status:</strong> <span id="viewStatus"></span></p>
+
         <p id="viewDescription" class="text-muted small px-4"></p>
+        <div class="modal-footer">
+          <div id="deleteBookBtnContainer"></div>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>

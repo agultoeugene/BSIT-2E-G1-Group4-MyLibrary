@@ -2,27 +2,29 @@ const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
 get();
 let books = []; 
 function get() {
-     let container = $("#bookContainer");
-    $.ajax({
-        url : api,
-        type : "GET",
-        data : "action=get",
-        success : function(response){
-
-            let resp = JSON.parse(response);
-
-           if (resp.status == "success") {
-                books = resp.data;
-                displayBooks(books);
-            } else {
-                container.html("<p>No books found.</p>");
+    return new Promise((resolve, reject) => {
+        let container = $("#bookContainer");
+        $.ajax({
+            url: api,
+            type: "GET",
+            data: "action=get",
+            success: function(response) {
+                let resp = JSON.parse(response);
+                if (resp.status == "success") {
+                    books = resp.data;
+                    displayBooks(books);
+                    resolve(books); 
+                } else {
+                    container.html("<p>No books found.</p>");
+                    resolve([]); 
+                }
+            },
+            error: function(error) {
+                alert(error);
+                reject(error);
             }
-        },
-        error : function (error)
-         {
-            alert(error);
-         }
-    })
+        });
+    });
 }
 
 function displayBooks(bookList) {
@@ -30,7 +32,9 @@ function displayBooks(bookList) {
     container.html("");
 
     bookList.forEach(function(book, index) {
-        let badgeClass = book.availability === "Available" ? "bg-success" : "bg-danger";
+        const isAvailable = book.quantity > 0; 
+        let badgeClass = isAvailable ? "bg-success" : "bg-danger";
+        let statusText = isAvailable ? "Available" : "Unavailable";
         let quantityColor = book.quantity > 0 ? "green" : "red";
 
         container.append(`
@@ -41,7 +45,7 @@ function displayBooks(bookList) {
                         <h5>${book.title}</h5>
                         <p><strong>Author:</strong> ${book.author}</p>
                         <p><strong>Quantity:</strong> <span style="color:${quantityColor}">${book.quantity}</span></p>
-                        <p><strong>Status:</strong> <span class="badge ${badgeClass}">${book.availability}</span></p>
+                        <p><strong>Status:</strong> <span class="badge ${badgeClass}">${statusText}</span></p>
                     </div>
                 </div>
             </div>
@@ -61,15 +65,12 @@ function showBookModal(index) {
     $("#viewDescription").text(book.description);
 
     const statusEl = $("#viewStatus");
+    const isAvailable = book.quantity > 0; 
+        let badgeClass = isAvailable ? "bg-success" : "bg-danger";
+        let statusText = isAvailable ? "Available" : "Unavailable";
+        let quantityColor = book.quantity > 0 ? "green" : "red";
 
-    statusEl.text(book.availability);
-    if (book.availability === "Available") {
-        statusEl.css({ color: "green", fontWeight: "bold" });
-    } else {
-        statusEl.css({ color: "red", fontWeight: "bold" });
-    }
-
-
+    statusEl.html(`<span class="badge ${badgeClass}">${statusText}</span>`);
     let deleteBtnContainer = $("#deleteBookBtnContainer");
     deleteBtnContainer.html(`
         <button class="btn btn-danger" onclick="drop(${book.book_id}, ${index})">Delete Book</button>
@@ -94,7 +95,6 @@ function searchBooks(query) {
             book.isbn.toLowerCase().includes(searchTerm) ||
             book.publisher.toLowerCase().includes(searchTerm) ||
             book.location.toLowerCase().includes(searchTerm) ||
-            book.availability.toLowerCase().includes(searchTerm) ||
             book.description.toLowerCase().includes(searchTerm)
         );
     });
@@ -117,27 +117,29 @@ function displaySearchResults(filteredBooks, query) {
         return;
     }
 
-    filteredBooks.forEach((book, originalIndex) => {
-        let actualIndex = books.indexOf(book);
-        let badgeClass = "";
-        if (book.availability === "Available") badgeClass = "bg-success";
-        else if (book.availability === "Not Avilable") badgeClass = "bg-danger";
+   filteredBooks.forEach((book) => {
+    let actualIndex = books.indexOf(book);
 
-        container.innerHTML += `
-            <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center mb-3">
-                <div class="card shadow-sm" style="cursor:pointer;" onclick="showBookModal(${actualIndex})">
-                    <img src="${book.cover}" class="card-img-top book-img">
-                    <div class="card-body text-center">
-                        <h5>${book.title}</h5>
-                        <p><strong>Author:</strong> ${book.author}</p>
-                        <p><strong>:</strong> ${book.author}</p>
-                        <p><strong>Quantity:</strong> ${book.quantity}</p>
-                        <p><strong>Status:</strong> <span class="badge ${badgeClass}">${book.availability}</span></p>
-                    </div>
+    const isAvailable = book.quantity > 0;
+    let badgeClass = isAvailable ? "bg-success" : "bg-danger";
+    let statusText = isAvailable ? "Available" : "Unavailable";
+
+    container.innerHTML += `
+        <div class="col-12 col-md-6 col-lg-4 d-flex justify-content-center mb-3">
+            <div class="card shadow-sm" style="cursor:pointer;" onclick="showBookModal(${actualIndex})">
+                <img src="${book.cover}" class="card-img-top book-img">
+                <div class="card-body text-center">
+                    <h5>${book.title}</h5>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <p><strong>Quantity:</strong> 
+                        <span style="color:${isAvailable ? 'green' : 'red'}">${book.quantity}</span>
+                    </p>
+                     <p><strong>Status:</strong> <span class="badge ${badgeClass}">${statusText}</span></
                 </div>
             </div>
-        `;
-    });
+        </div>
+    `;
+});
 }
 
 function clearSearch() {
@@ -151,16 +153,23 @@ function handleLiveSearch(event) {
     searchBooks(query);
 }
 
-function handleSearch(event, isFromDashboard = false) {
+function handleSearch(event) {
     event.preventDefault();
-    let searchInput = event.target.querySelector("input[type='search']");
-    let query = searchInput.value.trim();
 
-    if (isFromDashboard && query) {
-        window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/pages/book.php?search=" + encodeURIComponent(query);
+    
+    let searchInput = event.target.querySelector("input[type='search']");
+    if (!searchInput) return;
+
+    let query = searchInput.value.trim();
+    if (!query) return;
+
+
+    const currentPage = window.location.pathname.split("/").pop(); 
+
+    if (currentPage !== "student.php") {
+        window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php?search=" + encodeURIComponent(query);
     }
 }
-
 function executeSearchFromURL() {
     const params = new URLSearchParams(window.location.search);
     const searchQuery = params.get("search");
@@ -171,10 +180,9 @@ function executeSearchFromURL() {
         searchBooks(searchQuery);
     }
 }
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", executeSearchFromURL);
-} else {
-    executeSearchFromURL();
-}
-
+$(document).ready(function() {
+    get().then(() => {
+    
+        executeSearchFromURL();
+    });
+});

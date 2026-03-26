@@ -34,6 +34,7 @@ function displayStudents(studentList) {
         container.append(createStudentRow(student));
     });
 }
+
 function createStudentRow(student) {
     return `
 <tr>
@@ -43,12 +44,53 @@ function createStudentRow(student) {
     <td class="text-center">${student.course}</td>
     <td class="text-center">${student.college}</td>
     <td class="text-center">
-        <button class="btn btn-success btn-sm" style="width:70px;"onclick="edit('${student.student_id}')">Edit</button>
-        <button class="btn btn-danger btn-sm" style="width:70px;" onclick="drop(this, '${student.student_number}')">Delete</button>
+        <button class="btn btn-success btn-sm" style="width:60px;" onclick="edit('${student.student_id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" style="width:60px;" onclick="drop(this, '${student.student_number}')">Delete</button>
+        <button class="btn btn-primary btn-sm" style="width:60px;" onclick="goToBorrow('${student.student_id}')">Borrow</button>
     </td>
 </tr>
 `;
 }
+function goToBorrow(studentId) {
+ 
+    const id = Number(studentId);
+
+    const student = stud.find(s => Number(s.student_id) === id);
+    if (!student) {
+        alert("Student not found!");
+        return;
+    }
+
+    const studentName = encodeURIComponent(student.name);
+
+    window.location.href = `/BSIT-2E-G1-Group4-MyLibrary/system/pages/borrow.php?student_id=${id}&student_name=${studentName}`;
+}
+function handleSearch(event, redirectToBook = false) {
+    event.preventDefault();
+    
+    let input = event.target.querySelector("input[type='search']");
+    let query = input.value.trim();
+
+    if (!query) return;
+
+    const currentPage = window.location.pathname.split("/").pop();
+
+    if (currentPage === "student.php") {
+        handleLiveStudentSearch({ target: input });
+    } else {
+        window.location.href = `/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php?search=${encodeURIComponent(query)}`;
+    }
+}
+window.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get("search");
+
+    if (searchQuery) {
+        const input = document.querySelector(".search-box input[type='search']");
+        input.value = searchQuery;
+        handleLiveSearch({ target: input });
+    }
+});
 
 function searchStudents(query) {
     if (!query.trim()) {

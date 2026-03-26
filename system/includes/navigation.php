@@ -34,11 +34,11 @@
 
     <form class="d-none d-lg-flex search-box" role="search" onsubmit="handleSearch(event, true)">
       <input 
-  class="form-control me-2"
-  type="search"
-  placeholder="<?php echo $placeholder; ?>"
-  oninput="<?php echo $currentPage == 'student.php' ? 'handleLiveStudentSearch(event)' : 'handleLiveSearch(event)'; ?>"
->
+    class="form-control me-2"
+    type="search"
+    placeholder="<?php echo $placeholder; ?>"
+    oninput="<?php echo $currentPage == 'student.php' ? 'handleLiveStudentSearch(event)' : 'handleLiveSearch(event)'; ?>"
+  >
       <button class="btn btn-outline-primary" type="submit">
         <i class="bi bi-search"></i>
       </button>

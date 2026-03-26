@@ -101,6 +101,7 @@ function store() {
             success: function(response){
                  alert(response.message); 
                 if(response.status === "success"){
+                    hideModalAndDisplayBook();
                     window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
                 }
             },
@@ -120,7 +121,7 @@ function store() {
         sendAjax(cover);
     }
 
-    hideModalAndDisplayBook();
+    
 }
 
 function hideModalAndDisplayBook() {

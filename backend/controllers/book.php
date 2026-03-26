@@ -112,6 +112,21 @@
             ]);
              exit;
         }
+        if ($_GET['action'] === "get") {
+
+            $result = $conn->query("SELECT title, genre, availability FROM books");
+
+            $books = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $books[] = $row;
+            }
+
+            echo json_encode([
+                "status" => "success",
+                "data" => $books
+            ]);
+        }
 	
 }
 

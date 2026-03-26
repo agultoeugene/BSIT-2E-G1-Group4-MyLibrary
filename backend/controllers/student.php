@@ -114,6 +114,23 @@
         echo json_encode(['isUnique' => $result['count'] == 0]);
         exit;
      }       
+
+     if ($action == "getS") {
+
+    $result = $conn->query("SELECT student_id, name, student_number FROM students");
+
+    $students = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $students[] = $row;
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "data" => $students
+    ]);
+    exit;
+}
       }
      
       	
