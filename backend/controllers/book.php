@@ -6,12 +6,26 @@
 
             $payload = json_decode($_POST["payload"]);
 
-            $statement = $conn->prepare("INSERT INTO books (cover, title, author, isbn, genre, location, availability, quantity, publisher, description) 
-            VALUES(?,?,?,?,?,?,?,?,?,?)");
+           $statement = $conn->prepare("
+            INSERT INTO books 
+            (cover, title, author, isbn, genre, location, availability, quantity, total_quantity, publisher, description) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?)
+            ");
 
-            $statement->bind_param("sssssssiss", $payload->cover, $payload->title, $payload->author, 
-            $payload->isbn, $payload->genre, $payload->location,  $payload->availability, $payload->quantity,
-            $payload->publisher, $payload->description);
+            $statement->bind_param(
+                "sssssssiiss",
+                $payload->cover,
+                $payload->title,
+                $payload->author,
+                $payload->isbn,
+                $payload->genre,
+                $payload->location,
+                $payload->availability,
+                $payload->quantity,      
+                $payload->quantity,    // available
+                $payload->publisher,
+                $payload->description
+            );
 
             if ($statement->execute()) {
                 echo json_encode([
@@ -25,49 +39,54 @@
                     ]);
                 }
         }
+if ($_POST['action'] == "drop") {
+    $id = $_POST['book_id'];
 
-        if ($_POST['action'] == "drop") {
-		$id = $_POST['book_id'];
-		
-		$statement = $conn->prepare("DELETE FROM books where book_id = ?");
-		$statement->bind_param("i", $id);
-		
-		if ($statement->execute()) {
-			echo json_encode([
-				"status" => "success",
-				"message" => "Book successfully deleted"
-			]);
-		} else {
-			echo json_encode([
-				"status" => "failed",
-				"message" => "Cannot delete record"
-			]);
-		}
-		
-	}
+  
+    $stmt1 = $conn->prepare("DELETE FROM borrow_details WHERE book_id = ?");
+    $stmt1->bind_param("i", $id);
+    $stmt1->execute();
+
+
+    $stmt2 = $conn->prepare("DELETE FROM books WHERE book_id = ?");
+    $stmt2->bind_param("i", $id);
+
+    if ($stmt2->execute()) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Book successfully deleted"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "failed",
+            "message" => "Cannot delete record"
+        ]);
+    }
+}
     if ($_POST['action'] == "update") {
 
     $id = $_POST['id'];
     $payload = json_decode($_POST['payload']);
 
     $statement = $conn->prepare("
-        UPDATE books SET 
-            cover = ?,
-            title = ?, 
-            author = ?, 
-            isbn = ?, 
-            genre = ?, 
-            location = ?, 
-            publisher = ?, 
-            quantity = ?, 
-            description = ?,
-            availability = ?
-        WHERE book_id = ?
+       UPDATE books SET 
+    cover = ?,
+    title = ?, 
+    author = ?, 
+    isbn = ?, 
+    genre = ?, 
+    location = ?, 
+    publisher = ?, 
+    quantity = ?, 
+    total_quantity = ?, 
+    description = ?,
+    availability = ?
+    WHERE book_id = ?
     ");
 
   
     $statement->bind_param(
-        "sssssssissi",
+        "sssssssiissi",
         $payload->cover,
         $payload->title,
         $payload->author,
@@ -75,6 +94,7 @@
         $payload->genre,
         $payload->location,
         $payload->publisher,
+        $payload->quantity,
         $payload->quantity,
         $payload->description,
         $payload->availability, 

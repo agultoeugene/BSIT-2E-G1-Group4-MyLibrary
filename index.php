@@ -1,6 +1,4 @@
-<?php
-  include("frontend/includes/navigation.php");
-?> 
+
 
 <!doctype html>
 <html lang="en">
@@ -12,10 +10,14 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="frontend/assets/css/home.css" />
     <link rel="stylesheet" href="frontend/assets/css/navigation.css">
+   
   </head>
-
+<?php
+  include("frontend/includes/navigation.php");
+?> 
   <body class="bg-body-tertiary">
     <section class="content-container d-flex align-items-center page-content">
       <div class="container">

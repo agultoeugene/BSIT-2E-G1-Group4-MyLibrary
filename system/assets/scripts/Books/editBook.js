@@ -55,27 +55,56 @@ function update() {
         };
 
         $.ajax({
-            url: apiE,
-            type: "POST",
-            data: {
-                action: "update",
-                id: id,
-                payload: JSON.stringify(payload)
-            },
-            success: function(response){
-                let resp = JSON.parse(response);
-                alert(resp.message);
-                if(resp.status === "success"){
-                    bootstrap.Modal.getInstance(document.getElementById('addBookModal')).hide();
-                    $("#bookContainer").html("");
-                    get();
-                }
-            },
-            error: function(err){
-                console.log(err);
-                alert("Something went wrong!");
-            }
+    url: apiE,
+    type: "POST",
+    data: {
+        action: "update",
+        id: id,
+        payload: JSON.stringify(payload)
+    },
+
+    success: function(response){
+
+        let resp = JSON.parse(response);
+
+        if(resp.status === "success"){
+
+            Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: resp.message,
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            bootstrap.Modal.getInstance(
+                document.getElementById('addBookModal')
+            ).hide();
+
+            $("#bookContainer").html("");
+            get();
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Update Failed",
+                text: resp.message
+            });
+
+        }
+    },
+
+    error: function(err){
+        console.log(err);
+
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Something went wrong!"
         });
+    }
+});
     };
 
     if(file){

@@ -1,3 +1,7 @@
+<?php
+include("../../backend/config/config.php");
+requireLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +11,7 @@
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/css/nav.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
 </head>
 <body>
@@ -18,10 +23,16 @@
         <a href="borrow.php" class="btn btn-primary">Add Borrow</a>
     </div>
 
-   <div class="mb-4 text-start">
-    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#returnedSummaryModal">
+<div class="mb-4 d-flex align-items-center">
+    <!-- Button on the left -->
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#returnedSummaryModal">
         Show Returned Books Summary
     </button>
+
+    <!-- Search input on the right -->
+    <div class="ms-auto col-md-3">
+        <input type="text" id="searchBorrowInput" class="form-control" placeholder="🔍 Search borrowed records...">
+    </div>
 </div>
 <div class="modal fade" id="returnBookModal" tabindex="-1" aria-labelledby="returnBookModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -53,25 +64,28 @@
       </div>
       <div class="modal-body">
         <table class="table table-bordered">
-          <thead class="table-light">
+          <thead class="table-success">
             <tr>
 
               <th class="text-center">Name</th>
               <th class="text-center">Student Number</th>
               <th class="text-center">Book(s)</th>
               <th class="text-center">Return Date</th>
-              <th class="text-center">Action</th>
+              <th class="text-center">Returned To</th>
             </tr>
           </thead>
           <tbody id="returnedSummaryBody"></tbody>
         </table>
+        <button id="exportPdfBtn" class="btn btn-danger">Export to PDF</button>
+        <button id="exportExcelBtn" class="btn btn-success">Export to Excel</button>
+       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Summary</button>
       </div>
     </div>
   </div>
 </div>
 
     <table class="table table-bordered custom-table mt-2" style="table-layout: fixed;">
-        <thead class="table-light">
+        <thead class="table-primary">
             <tr>
                 <th class="text-center">Name</th>
                 <th class="text-center">Student Number</th>
@@ -81,7 +95,7 @@
                 <th class="text-center">Action</th>
             </tr>
         </thead>
-        <tbody id="manageTableBody"></tbody>
+        <tbody id="manageTableBody" class="text-center"></tbody>
     </table>
 
 </div>
@@ -90,6 +104,9 @@
 </script>
     <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="../assets/scripts/manageBorrow/manageBorrow.js"></script>
     <script src="../assets/scripts/Books/displayBook.js"></script>
     

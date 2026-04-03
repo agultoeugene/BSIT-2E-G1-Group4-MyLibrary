@@ -15,7 +15,6 @@ function loadStudents(selectedIdFromUrl = null, selectedNameFromUrl = null) {
             if (response.status === "success") {
                 students = response.data;
                 displayStudents(students);
-
                 if (selectedIdFromUrl && selectedNameFromUrl) {
                     $('#studentButton').text(decodeURIComponent(selectedNameFromUrl));
                     $('#studentButton').attr('data-selected-id', selectedIdFromUrl);
@@ -34,57 +33,11 @@ function loadBooks() {
         success: function (response) {
             if (response.status === "success") {
                 bookss = response.data;
-                populateGenres();
             }
         }
     });
 }
-function populateGenres() {
-    const genreContainer = $('#genreListContainer');
 
-    if (!bookss.length) {
-        genreContainer.html('<li class="text-muted small text-center p-2">No genres available.</li>');
-        return;
-    }
-
-    const uniqueGenres = [...new Set(bookss.map(b => b.genre))];
-
-    const html = uniqueGenres.map(g => `
-        <li><a class="dropdown-item genre-item" href="#">${g}</a></li>
-    `).join('');
-
-    genreContainer.html(html);
-
-    $('.genre-item').on('click', function(e) {
-        e.preventDefault();
-
-        const selectedGenre = $(this).text().trim();
-        $('#genreButton').text(selectedGenre);
-        $('#bookDropdownButton').text("Select Books");
-
-        const filtered = bookss.filter(b => b.genre === selectedGenre);
-
-        $('#bookListContainer').html(
-            filtered.length
-                ? filtered.map((b, i) => `
-                    <li class="dropdown-item d-flex align-items-center py-2">
-                        <div class="form-check mb-0">
-                            <input class="form-check-input book-checkbox"
-                                   type="checkbox"
-                                   id="book${i}"
-                                   value="${b.title}"
-                                   ${b.availability !== "Available" ? 'disabled' : ''}>
-                            <label class="form-check-label ${b.availability !== "Available" ? 'text-muted' : ''} ms-2">
-                                ${b.title}
-                                ${b.availability !== "Available" ? '<small class="text-danger">(Unavailable)</small>' : ''}
-                            </label>
-                        </div>
-                    </li>
-                `).join('')
-                : '<li class="text-muted small text-center p-3">No books available.</li>'
-        );
-    });
-}
 
 
 function goToStep(stepNumber) {
@@ -95,10 +48,9 @@ function goToStep(stepNumber) {
     if (stepNumber === 2) {
 
         const selectedId = studentBtn.attr('data-selected-id');
-        const gen = $('#genreButton').text().trim();
         const dB = $('#dateBorrow').val();
         const dD = $('#dateDue').val();
-        const booksChecked = $('.book-checkbox:checked');
+        const selectedBookId = $('#bookId').val();
 
         $('.text-danger.small').hide();
 
@@ -109,12 +61,7 @@ function goToStep(stepNumber) {
             isValid = false;
         }
 
-        if (gen === "Genre" || gen === "") {
-            $('#genre-error').show();
-            isValid = false;
-        }
-
-        if (booksChecked.length === 0) {
+        if (!selectedBookId) {
             $('#book-error').show();
             isValid = false;
         }
@@ -131,38 +78,30 @@ function goToStep(stepNumber) {
 
         if (!isValid) return;
 
-  
         const student = students.find(s => s.student_id == selectedId);
         if (student) {
-            $('#confirm-name').text(student.name);
+            $('#confirm-name').text(student.full_name);
         }
 
-        $('#confirm-genre').text(gen);
         $('#confirm-dateBorrow').text(dB);
         $('#confirm-dateDue').text(dD);
-
-        $('#confirm-books').text(
-            booksChecked.map(function () {
-                return $(this).val();
-            }).get().join(", ")
-        );
+        $('#confirm-genre').text($('#bookGenre').val());
+        $('#confirm-books').text($('#bookTitle').val());
     }
 
- 
     $('#step-1').toggle(stepNumber === 1);
     $('#step-2').toggle(stepNumber === 2);
     $('#step-3').toggle(stepNumber === 3);
 
-
-    const widths = { 1: "33%", 2: "66%", 3: "100%" };
+    const widths = {1: "33%", 2: "66%", 3: "100%"};
     progressBar.css('width', widths[stepNumber]);
 
     if (stepNumber === 3) {
         progressBar.addClass('bg-success');
+    } else {
+        progressBar.removeClass('bg-success');
     }
 }
-
-
 
 $(document).ready(function () {
 
@@ -170,15 +109,13 @@ $(document).ready(function () {
     const dueInput = $('#dateDue');
     const studentBtn = $('#studentButton');
     const bookContainer = $('#bookListContainer');
-    const genreBtn = $('#genreButton');
-    const bookBtn = $('#bookDropdownButton');
     loadBooks();
 
     const urlParams = new URLSearchParams(window.location.search);
-        const studentId = urlParams.get('student_id');
-const studentName = urlParams.get('student_name');
+    const studentId = urlParams.get('student_id');
+    const studentName = urlParams.get('student_name');
 
-loadStudents(studentId, studentName);
+        loadStudents(studentId, studentName);
 
     if(studentId && studentName) {
         $('#studentButton').text(decodeURIComponent(studentName));
@@ -208,52 +145,45 @@ loadStudents(studentId, studentName);
         }
     });
 
+   $('#bookSearchInput').on('input', function () {
+    const query = $(this).val().trim().toLowerCase();
 
-    $('.genre-item').on('click', function (e) {
-        e.preventDefault();
+    if (!query) {
+        $('#bookTitle').val('');
+        $('#bookGenre').val('');
+        $('#bookAuthor').val('');
+        $('#bookISBN').val('');
+        $('#bookId').val(''); 
 
-        const selectedGenre = $(this).text().trim();
-        genreBtn.text(selectedGenre);
-        bookBtn.text("Select Books");
+        $('#book-error').hide();
+        return;
+    }
 
-        const filtered = bookss.filter(b => b.genre === selectedGenre);
+    const matchedBook = bookss.find(b => 
+        b.title.toLowerCase().includes(query) ||
+        b.genre.toLowerCase().includes(query) ||
+        b.author.toLowerCase().includes(query) ||
+        b.isbn.toLowerCase().includes(query)
 
-        if (bookContainer.length) {
+        
+    );
 
-            bookContainer.html(
-                filtered.length
-                    ? filtered.map((b, i) => `
-                        <li class="dropdown-item d-flex align-items-center py-2">
-                            <div class="form-check mb-0">
-                                <input class="form-check-input book-checkbox"
-                                       type="checkbox"
-                                       id="book${i}"
-                                       value="${b.title}"
-                                       ${b.availability !== "Available" ? 'disabled' : ''}>
-                                <label class="form-check-label ${b.availability !== "Available" ? 'text-muted' : ''} ms-2">
-                                    ${b.title}
-                                    ${b.availability !== "Available" ? '<small class="text-danger">(Unavailable)</small>' : ''}
-                                </label>
-                            </div>
-                        </li>
-                    `).join('')
-                    : '<li class="text-muted small text-center p-3">No books available.</li>'
-            );
-        }
-    });
+    if (matchedBook) {
+        $('#bookTitle').val(matchedBook.title);
+        $('#bookGenre').val(matchedBook.genre);
+        $('#bookAuthor').val(matchedBook.author);
+        $('#bookISBN').val(matchedBook.isbn);
+        $('#bookId').val(matchedBook.book_id);
 
-    $('#bookListContainer').on('change', '.book-checkbox', function () {
-
-        const checked = $('.book-checkbox:checked');
-
-        if (checked.length === 0) {
-            $('#bookDropdownButton').text("Select Books");
-        } else if (checked.length === 1) {
-            $('#bookDropdownButton').text(checked.val());
-        } else {
-            $('#bookDropdownButton').text(`${checked.length} Books Selected`);
-        }
-    });
+         $('#book-error').hide()
+    } else {
+        $('#bookTitle').val('Not Found');
+        $('#bookGenre').val('');
+        $('#bookAuthor').val('');
+        $('#bookISBN').val('');
+        $('#bookId').val(''); 
+    }
+});
 
 });
 function displayStudents(studentArray) {
@@ -269,7 +199,7 @@ function displayStudents(studentArray) {
     const studentHtml = studentArray.map(s => `
         <li>
             <a class="dropdown-item student-item" href="#" data-id="${s.student_id}">
-                ${s.name} (${s.student_number})
+                ${s.full_name} (${s.student_number})
             </a>
         </li>
     `).join("");
@@ -284,46 +214,64 @@ function searchStudents(query) {
     }
 
     const searchTerm = query.toLowerCase();
-    const filteredStudents = students.filter(student => {
-        return (
-            student.name.toLowerCase().includes(searchTerm) ||
-            student.student_number.toString().toLowerCase().includes(searchTerm)
-        );
-    });
+  const filteredStudents = students.filter(student => {
+    return (
+        student.full_name.toLowerCase().includes(searchTerm) ||
+        student.student_number.toString().toLowerCase().includes(searchTerm)
+    );
+});
 
     displayStudents(filteredStudents);
 }
 
 function saveTransaction() {
-    const selectedId = $('#studentButton').attr('data-selected-id');
-    const booksChecked = $('.book-checkbox:checked');
+const selectedId = $('#studentButton').attr('data-selected-id');
+const selectedBookId = $('#bookId').val();
 
-    if (!selectedId || booksChecked.length === 0) return;
+if (!selectedId || !selectedBookId) return;
 
-    const books = booksChecked.map(function() {
-        return $(this).val();
-    }).get().join(", ");
+const payload = {
+    student_id: selectedId,
+    book_id: selectedBookId, 
+    date_borrow: $('#dateBorrow').val(),
+    date_due: $('#dateDue').val()
+};
 
-    const payload = {
-        student_id: selectedId,
-        books: books,
-        date_borrow: $('#dateBorrow').val(),
-        date_due: $('#dateDue').val()
-    };
+$.ajax({
+    url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php",
+    type: "POST",
+    data: { 
+        action: "storeTransaction", 
+        payload: JSON.stringify(payload) 
+    },
+    dataType: "json",
 
-    $.ajax({
-        url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php",
-        type: "POST",
-        data: { action: "storeTransaction", payload: JSON.stringify(payload) },
-        dataType: "json",
-        success: function(response) {
-            if(response.status === "success") {
-                alert(response.message);
-                goToStep(1);
-                loadTransactions(); 
-            } else {
-                alert(response.message);
-            }
+    success: function(response) {
+
+        if(response.status === "success") {
+
+                goToStep(3);
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: response.message
+            });
+
         }
-    });
+
+    },
+
+    error: function(err){
+        console.error(err);
+
+        Swal.fire({
+            icon: "error",
+            title: "Server Error",
+            text: "Failed to process transaction."
+        });
+    }
+});
 }

@@ -1,4 +1,7 @@
-
+<?php
+include("../../backend/config/config.php");
+requireLogin();
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -15,6 +18,8 @@
     />
     <link rel="stylesheet" href="../assets/css/nav.css" />
     <link rel="stylesheet" href="../assets/css/dashboard.css" />
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
   </head>
 
   <body class="bg-body-tertiary">

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../assets/css/navigation.css">
      <link rel="stylesheet" href="../assets/css/home.css">
     <link rel="stylesheet" href="../assets/css/services.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-body-tertiary ">

@@ -7,7 +7,7 @@ $.ajax({
     data: { action: "get" },
     dataType: "json",
     success: function(response) {
-        console.log("Dashboard data:", response); // check what comes back
+        console.log("Dashboard data:", response); 
         if (response.status === "success") {
             $(".box-1 h2").text(response.totalBooks);      
             $(".box-2 h2").text(response.totalCategories); 
@@ -20,7 +20,7 @@ $.ajax({
         }
     },
     error: function(err) {
-        console.error("AJAX error:", err.responseText); // ← show PHP error if any
+        console.error("AJAX error:", err.responseText); 
     }
 });
 }

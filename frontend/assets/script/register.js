@@ -68,11 +68,27 @@ function store() {
               },
         dataType: "json",
         success : function (response) {
-            alert(response.message);
-            if(response.status == "success"){
+             if (response.status == "success") {
+
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.message,
+                confirmButtonText: "OK"
+            }).then(() => {
                 window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/index.php";
-            }
-        },
+            });
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: response.message
+            });
+
+        }
+    },
        error : function (error) {
 			    alert(error.message);
 		    }

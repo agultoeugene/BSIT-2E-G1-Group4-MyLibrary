@@ -1,3 +1,4 @@
+let allBorrowedRows = [];
 function loadRecords() {
     $.ajax({
         url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php",
@@ -20,35 +21,39 @@ function loadRecords() {
                 return;
             }
 
-            borrowedRecords.forEach(record => {
-                const today = new Date().toISOString().split('T')[0];
-                const isOverdue = record.date_due < today;
+borrowedRecords.forEach(record => {
+    const today = new Date();
+    
+    const [year, month, day] = record.date_due.split('-');
+    const dueDate = new Date(year, month - 1, day);
 
-                const statusBadge = isOverdue
-                    ? `<span class="badge bg-danger">Overdue</span>`
-                    : `<span class="badge bg-warning text-dark">Borrowed</span>`;
-                    
-                const returnBtn = record.status === 'Borrowed' 
-                    ? `<button class="btn btn-sm btn-success me-2 return-btn" data-id="${record.id}">Return</button>` 
-                    : '';
+    today.setHours(0,0,0,0);
+    dueDate.setHours(0,0,0,0);
 
-                html += `
-                <tr>
-                    <td>${record.name}</td>
-                    <td>${record.student_number}</td>
-                    <td>${record.books}</td>
-                    <td>${record.date_due}</td>
-                    <td class="text-center">
-                        ${statusBadge}
-                    </td>
-                    <td>
-                <div class="d-flex justify-content-center gap-2">
-                    ${returnBtn}
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="${record.id}">Delete</button>
-                </div>
-                </td>
-                </tr>`;
-            });
+    const isOverdue = dueDate < today;
+
+const statusBadge = isOverdue
+    ? `<span class="badge bg-danger-subtle text-danger">Overdue</span>`
+    : `<span class="badge bg-warning-subtle text-dark">Borrowed</span>`;
+        
+    const returnBtn = record.status === 'Borrowed' 
+        ? `<button class="btn btn-sm btn-success me-2 return-btn" data-id="${record.borrow_id}">Return</button>` 
+        : '';
+
+    html += `
+    <tr>
+        <td>${record.full_name}</td>
+        <td>${record.student_number}</td>
+        <td>${record.title}</td>
+        <td>${record.date_due}</td>
+        <td class="text-center">${statusBadge}</td>
+        <td>
+            <div class="d-flex justify-content-center gap-2">
+                ${returnBtn}
+            </div>
+        </td>
+    </tr>`;
+});
 
             tbody.html(html);
 
@@ -57,10 +62,11 @@ function loadRecords() {
                 const id = $(this).data('id');
                 markAsReturned(id);
             });
+             allBorrowedRows = tbody.children().clone();
 
-            $('.delete-btn').off('click').on('click', function() {
+            $('.return-btn').off('click').on('click', function() {
                 const id = $(this).data('id');
-                deleteRecord(id);
+                markAsReturned(id);
             });
 
           
@@ -96,27 +102,56 @@ $(document).ready(function() {
     $('#confirmReturnBtn').off('click').on('click', function() {
         if (!currentReturnId) return;
 
-        $.ajax({
+       $.ajax({
             url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php",
             type: "POST",
             data: { action: "returnBook", id: currentReturnId },
             dataType: "json",
+
             success: function(response) {
-                if(response.status === "success") {
-                    alert(response.message);
-                    loadRecords(); 
-                    loadReturnedSummary();
-                } else {
-                    alert(response.message);
-                }
-            },
-            complete: function() {
-                currentReturnId = null;
-                const modalEl = document.getElementById('returnBookModal');
-                const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                modalInstance.hide();
-            }
+
+        if(response.status === "success") {
+
+            Swal.fire({
+                icon: "success",
+                title: "Book Returned!",
+                text: response.message,
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            loadRecords(); 
+            loadReturnedSummary();
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Failed",
+                text: response.message
+            });
+
+        }
+
+    },
+
+    complete: function() {
+        currentReturnId = null;
+        const modalEl = document.getElementById('returnBookModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        modalInstance.hide();
+    },
+
+    error: function(err){
+        console.error(err);
+        Swal.fire({
+            icon: "error",
+            title: "Server Error",
+            text: "Failed to return the book."
         });
+    }
+
+});
     });
 
 });
@@ -145,20 +180,17 @@ function loadReturnedSummary() {
 
         html += `
             <tr>
-                <td>${r.name}</td>
-                <td>${r.student_number}</td>
-                <td>${r.books}</td>
-                <td>${returnDate}</td>
-                <td class="text-center">
-                    <button class="btn btn-sm btn-danger delete-summary-btn" data-id="${r.id}">
-                        Delete
-                    </button>
-                </td>
+                <td class="text-center">${r.full_name}</td>
+                <td class="text-center">${r.student_number}</td>
+                <td class="text-center">${r.title}</td>
+                <td class="text-center">${returnDate}</td>
+                <td class="text-center">${r.account_name}</td>
             </tr>
         `;
 });
 
             tbody.html(html);
+        
         }
     });
 }
@@ -168,21 +200,62 @@ $('#returnedSummaryBody').off('click', '.delete-summary-btn').on('click', '.dele
 });
 $('#returnedSummaryModal').on('show.bs.modal', loadReturnedSummary);
 
+$('#exportPdfBtn').on('click', function() {
+    const table = document.getElementById('returnedSummaryBody').closest('table');
 
+    html2canvas(table).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'pt', 'a4');
 
-function deleteRecord(id) {
-    if(!confirm("Are you sure you want to delete this transaction?")) return;
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    $.post("/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php", 
-        { action: "deleteTransaction", id: id }, 
-        function(resp) {
-            if(resp.status === 'success') {
-                 loadRecords();        
-                loadReturnedSummary(); 
-            }
-            else alert("Failed to delete transaction");
-        }, 'json'
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('returned_books.pdf');
+    });
+});
+$('#exportPdfBtn').on('click', function() {
+    const table = document.getElementById('returnedSummaryBody').closest('table');
+
+    html2canvas(table).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'pt', 'a4');
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('returned_books.pdf');
+    });
+});
+
+$('#exportExcelBtn').on('click', function() {
+    const table = document.getElementById('returnedSummaryBody').closest('table');
+    const wb = XLSX.utils.table_to_book(table, { sheet: "Returned Books" });
+    XLSX.writeFile(wb, "returned_books.xlsx");
+});
+
+$('#searchBorrowInput').on('input', function() {
+    const query = $(this).val().toLowerCase();
+    const tbody = $('#manageTableBody');
+
+    if (!query) {
+        tbody.html(allBorrowedRows);
+        return;
+    }
+
+    const visibleRows = allBorrowedRows.filter(function() {
+        const name = $(this).find('td:eq(0)').text().toLowerCase();
+        const studentNumber = $(this).find('td:eq(1)').text().toLowerCase();
+        const books = $(this).find('td:eq(2)').text().toLowerCase();
+        return name.includes(query) || studentNumber.includes(query) || books.includes(query);
+    });
+
+    tbody.html(visibleRows.length > 0 
+        ? visibleRows 
+        : '<tr><td colspan="6" class="py-5 text-muted text-center">No matching records found.</td></tr>'
     );
-}
-
+});
 $(document).ready(loadRecords);

@@ -1,3 +1,7 @@
+<?php
+include("../../backend/config/config.php");
+requireLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/css/nav.css" />
     <link rel="stylesheet" href="../assets/css/borrow.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
      <?php include("../includes/navigation.php");?>
@@ -36,41 +41,50 @@
                 <div id="studentNumber-error" class="text-danger small mt-1" style="display: none;">Please select a student.</div>
              </div>
            
-                    <div class="row mb-5">
-                    <div class="col-md-6 text-start">
-                        <label class="form-label fw-bold mb-1">Choose Genre</label>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle w-100 d-flex align-items-center justify-content-between" type="button" id="genreButton" data-bs-toggle="dropdown">
-                             Genre
-                            </button>
-                            <ul class="dropdown-menu w-100 shadow" id="genreListContainer"></ul>
-                        </div>
-                        <div id="genre-error" class="text-danger small mt-1" style="display: none;">Please select a genre.</div>
+                   <div class="row mb-5">
+            <div class="mb-4 text-start">
+                <label class="form-label fw-bold mb-1">Book</label>
+                <div class="input-group mb-1">
+                    <input type="text" id="bookSearchInput" class="form-control" placeholder="Search book to borrow">
+                    <button class="btn btn-primary" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                   
+                </div>
+                 <small id="book-error" class="text-danger small" style="display:none;">
+                    Please input a valid book.
+                </small>
+                <input type="hidden" id="bookId">
+                <div id="book-error" class="text-danger small mt-1" style="display: none;"></div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Title</label>
+                        <input type="text" id="bookTitle" class="form-control" disabled>
                     </div>
-
-
-                    <div class="col-md-6 text-start mt-3 mt-md-0">
-                        <label class="form-label fw-bold mb-1">Choose Book</label>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle w-100 d-flex align-items-center justify-content-between" type="button" id="bookDropdownButton" data-bs-toggle="dropdown">
-                                Select Book(s)
-                            </button>
-                            <ul class="dropdown-menu w-100 shadow p-0" id="bookListContainer">
-                                <li class="text-muted small text-center p-3">Select a Genre First</li>
-                            </ul>
-                        </div>
-                        <div id="book-error" class="text-danger small mt-1" style="display: none;">Select at least one book.</div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Genre</label>
+                        <input type="text" id="bookGenre" class="form-control" disabled>
                     </div>
                 </div>
 
-
-                <div class="row justify-content-center mt-5">
-                    <div class="col-md-8 text-start mb-4">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Author</label>
+                        <input type="text" id="bookAuthor" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">ISBN</label>
+                        <input type="text" id="bookISBN" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+                <div class="row justify-content-center mt-3">
+                    <div class=" text-start mb-4">
                         <label for="dateBorrow" class="form-label fw-bold mb-1">Date of Borrow</label>
                         <input type="date" id="dateBorrow" class="form-control custom-date-blue">
                         <div id="borrow-error" class="text-danger small mt-1" style="display: none;">Please select a borrow date.</div>
                     </div>
-                    <div class="col-md-8 text-start mb-5">
+                    <div class="text-start mb-5">
                         <label for="dateDue" class="form-label fw-bold mb-1">Date Due</label>
                         <input type="date" id="dateDue" class="form-control custom-date-blue">
                         <div id="due-error" class="text-danger small mt-1" style="display: none;">Please select a due date.</div>

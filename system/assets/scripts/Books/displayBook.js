@@ -14,7 +14,7 @@ function get() {
                     books = resp.data;
                     displayBooks(books);
                     resolve(books); 
-                } else {
+                } else {      
                     container.html("<p>No books found.</p>");
                     resolve([]); 
                 }

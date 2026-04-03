@@ -1,4 +1,7 @@
-
+<?php
+include("../../backend/config/config.php");
+requireLogin();
+?>
 <!doctype html>
 <html lang="en">
 
@@ -10,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/css/nav.css" />
     <link rel="stylesheet" href="../assets/css/book.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>My Library - Category</title>
 </head>
 

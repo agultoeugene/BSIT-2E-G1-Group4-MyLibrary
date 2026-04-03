@@ -1,23 +1,63 @@
 const APID = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
+
 function drop(button, student_number) {
-    if (!confirm("Are you sure you want to delete this student?")) return;
 
-    $.ajax({
-        url: APID,
-        type: "POST",
-        data: { action: "drop", student_number: student_number },
-        dataType: "json",
-        success: function(response) {
-            if (response.status === "success") {
-                alert(response.message);
-                $(button).closest('tr').remove();
+    Swal.fire({
+        title: "Are you sure?",
+        text: "This student will be permanently deleted!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#d33"
+    }).then((result) => {
 
-            } else {
-                alert("Failed to delete student: " + response.message);
+        if (!result.isConfirmed) return;
+
+        $.ajax({
+            url: APID,
+            type: "POST",
+            data: {
+                action: "drop",
+                student_number: student_number
+            },
+            dataType: "json",
+
+            success: function(response) {
+
+                if(response.status === "success") {
+
+                    Swal.fire({
+                        icon: "success",
+                        title: "Deleted!",
+                        text: response.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.reload();
+                    });
+
+                } else {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Failed",
+                        text: response.message
+                    });
+
+                }
+            },
+
+            error: function(err) {
+                console.error(err);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Error deleting student."
+                });
             }
-        },
-         error: function(error){
-                alert(error.message);
-            }
+        });
+
     });
 }

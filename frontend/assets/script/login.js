@@ -55,11 +55,27 @@ function postOne() {
            },
      dataType: "json",
      success : function (response) {
-                alert(response.message);
-                if(response.status == "success"){
-                    window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/dashboard.php";
-                }
-        },
+        
+           if (response.status == "success") {
+           Swal.fire({
+            icon: "success",
+            title: response.message,
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/dashboard.php";
+        });
+
+        } else {
+
+            Swal.fire({
+                title: "Error!",
+                text: response.message,
+                icon: "error"
+            });
+
+        }
+    },
      error : function (error) {
 			      alert(error.message);
 	    	  }

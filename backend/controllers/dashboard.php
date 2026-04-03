@@ -7,7 +7,7 @@ if (isset($_GET['action'])) {
     if ($action === 'get') {
 
 
-        $resultBooks = $conn->query("SELECT COUNT(*) AS totalBooks FROM books");
+        $resultBooks = $conn->query("SELECT SUM(total_quantity) AS totalBooks FROM books");
         $totalBooks = $resultBooks->fetch_assoc()['totalBooks'];
 
 
@@ -15,20 +15,23 @@ if (isset($_GET['action'])) {
         $totalCategories = $resultGenres->fetch_assoc()['totalCategories'];
 
      
-        $resultAvailable = $conn->query("SELECT COUNT(*) AS availableBooks FROM books WHERE quantity > 0");
+        $resultAvailable = $conn->query("SELECT SUM(quantity) AS availableBooks FROM books WHERE quantity > 0");
         $availableBooks = $resultAvailable->fetch_assoc()['availableBooks'];
 
      
-        $resultStudents = $conn->query("SELECT COUNT(*) AS totalStudents FROM students");
+        $resultStudents = $conn->query("SELECT COUNT(*) AS totalStudents FROM student");
         $totalStudents = $resultStudents->fetch_assoc()['totalStudents'];
 
-        $resultBorrowed = $conn->query("SELECT COUNT(*) AS borrowedBooks FROM transactions WHERE status='Borrowed'");
+        $resultBorrowed = $conn->query("SELECT COUNT(*) AS borrowedBooks FROM borrow WHERE status='Borrowed'");
         $borrowedBooks = $resultBorrowed->fetch_assoc()['borrowedBooks'];
 
       
-        $today = date("Y-m-d");
-        $resultOverdue = $conn->query("SELECT COUNT(*) AS overdueBooks FROM transactions WHERE status='Borrowed' AND date_due < '$today'");
-        $overdueBooks = $resultOverdue->fetch_assoc()['overdueBooks'];
+        $resultOverdue = $conn->query("
+            SELECT COUNT(*) AS overdueBooks 
+            FROM borrow 
+            WHERE status='Borrowed' AND date_due < CURDATE()
+        ");
+         $overdueBooks = $resultOverdue->fetch_assoc()['overdueBooks'] ?? 0;
 
         echo json_encode([
             'status' => 'success',

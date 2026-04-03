@@ -99,11 +99,26 @@ function store() {
             },
             dataType: "json",
             success: function(response){
-                 alert(response.message); 
-                if(response.status === "success"){
-                    hideModalAndDisplayBook();
-                    window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
-                }
+             if(response.status === "success"){
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.message,
+                confirmButtonText: "OK"
+            }).then(() => {
+                hideModalAndDisplayBook();
+                window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
+            });
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: response.message
+            });
+
+        }
             },
             error: function(error){
                 alert(error.message);
