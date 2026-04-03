@@ -1,16 +1,14 @@
 const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
 function store() {
-    let title = $("#title").val();
-    let author = $("#author").val();
-    let isbn =  $("#isbn").val();
-    let genre = $("#genre").val();
-    let location = $("#location").val();
+    let title = $("#title").val().trim();
+    let author = $("#author").val().trim();
+    let isbn = $("#isbn").val().trim();
+    let genre = $("#genre").val().trim();
+    let location = $("#location").val().trim();
     let availability = $("#availability").val();
     let quantity = $("#quantity").val();
-    let description = $("#description").val();
-    let publisher = $("#publisher").val() || "Unknown";
-    let dueDate = $("#dueDate").val() || "";
-
+    let description = $("#description").val().trim();
+    let publisher = $("#publisher").val().trim() || "Unknown";
 
     let errTitle = $("#errTitle");
     let errAuthor = $("#errAuthor");
@@ -20,123 +18,97 @@ function store() {
     let errQuantity = $("#errQuantity");
     let errDesc = $("#errDesc");
 
+    // Clear previous errors
+    errTitle.text(""); errAuthor.text(""); errIsbn.text("");
+    errGenre.text(""); errLoc.text(""); errQuantity.text(""); errDesc.text("");
+
     let isValid = true;
 
-    errTitle.text("");
-    errAuthor.text("");
-    errIsbn.text("");
-    errGenre.text("");
-    errLoc.text("");
-    errQuantity.text("");
-    errDesc.text("");
-
-    let fileInput = $("#cover")[0];
-    let file = fileInput.files[0];
-
-    if (title == "") {
-        errTitle.text("Book title is required");
-        isValid = false;
-       
+    if (title == "") { errTitle.text("Book title is required"); isValid = false; }
+    if (author == "") { errAuthor.text("Author name is required"); isValid = false; }
+    if (isbn == "") { errIsbn.text("Please enter the ISBN"); isValid = false; }
+    if (genre == "") { errGenre.text("Please enter the Genre"); isValid = false; }
+    if (location == "") { errLoc.text("Library Location is required"); isValid = false; }
+    if (quantity === "" || isNaN(quantity) || Number(quantity) <= 0) { 
+        errQuantity.text("Quantity is required and must be greater than 0!"); 
+        isValid = false; 
     }
-    
-    if (author == "") {
-        errAuthor.text("Author name is required");
-        isValid = false;
-    }
+    if (description == "") { errDesc.text("Please enter the Short Description"); isValid = false; }
 
-    if (isbn == "") {
-        errIsbn.text("Please enter the ISBN");
-        isValid = false;
-    }
+    if (!isValid) return;
 
-     if (genre == "") {
-        errGenre.text("Please enter the Genre");
-        isValid = false;
-    }
-      if (location == "") {
-        errLoc.text("Library Location is required");
-        isValid = false;
-    }
-    if (quantity === "" || isNaN(quantity) || Number(quantity) <= 0) {
-        errQuantity.text("Quantity is required and must be greater than 0!");
-        isValid = false;
-    }
-
-
-      if (description == "") {
-        errDesc.text("Please enter the Short Description");
-        isValid = false;
-    }
-
-    if (!isValid) {
-        return;
-    }
-    
-
-    // Use placeholder if no file uploaded
-   let cover = "/BSIT-2E-G1-Group4-MyLibrary/system/assets/scripts/Books/placeholderimg/placeholder.png";
-
-    const sendAjax = (coverData) => {
-        let payload = {
-            cover: coverData,
-            title : title,
-            author : author,
-            isbn : isbn,
-            genre : genre,
-            location : location,
-            availability : availability,
-            quantity : quantity,
-            publisher : publisher,
-            description : description
-        }
-
-        $.ajax({
-            url: API,
-            type: "POST",
-            data: {
-                action: "store",
-                payload: JSON.stringify(payload)
-            },
-            dataType: "json",
-            success: function(response){
-             if(response.status === "success"){
+$.ajax({
+    url: API,
+    type: "POST",
+    data: {
+        action: "checkDuplicateTitle",
+        title: title
+    },
+    dataType: "json",
+    success: function(res) {
+        if(res.exists) {
             Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: response.message,
-                confirmButtonText: "OK"
-            }).then(() => {
-                hideModalAndDisplayBook();
-                window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
+                icon: "warning",
+                title: "Duplicate Book",
+                text: "A book with this title already exists!"
             });
-
+            return;
         } else {
-
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: response.message
-            });
-
+            submitBook();
         }
-            },
-            error: function(error){
-                alert(error.message);
-            }
+    },
+    error: function(err) {
+        console.error(err);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Could not check for duplicate book title."
         });
     }
+});
 
-    if (file) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-            sendAjax(e.target.result);
-        };
-        reader.readAsDataURL(file);
-    } else {
-        sendAjax(cover);
+    function submitBook() {
+        let fileInput = $("#cover")[0];
+        let file = fileInput.files[0];
+        let cover = "/BSIT-2E-G1-Group4-MyLibrary/system/assets/scripts/Books/placeholderimg/placeholder.png";
+
+        const sendAjax = (coverData) => {
+            let payload = {
+                cover: coverData,
+                title, author, isbn, genre, location, availability, quantity, publisher, description
+            };
+            $.ajax({
+                url: API,
+                type: "POST",
+                data: { action: "store", payload: JSON.stringify(payload) },
+                dataType: "json",
+                success: function(response) {
+                    if(response.status === "success") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success",
+                            text: response.message,
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            hideModalAndDisplayBook();
+                            window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
+                        });
+                    } else {
+                        Swal.fire({ icon: "error", title: "Error", text: response.message });
+                    }
+                },
+                error: function(error) { alert(error.message); }
+            });
+        }
+
+        if(file){
+            let reader = new FileReader();
+            reader.onload = function(e){ sendAjax(e.target.result); }
+            reader.readAsDataURL(file);
+        } else {
+            sendAjax(cover);
+        }
     }
-
-    
 }
 
 function hideModalAndDisplayBook() {

@@ -1,6 +1,18 @@
 <?php
 
    include("../config/config.php");
+   if(isset($_POST['action']) && $_POST['action'] === "checkDuplicateTitle" && isset($_POST['title'])){
+    $title = trim($_POST['title']);
+    $stmt = $conn->prepare("SELECT COUNT(*) AS cnt FROM books WHERE title=?");
+    $stmt->bind_param("s", $title);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+
+    echo json_encode([
+        "exists" => $result['cnt'] > 0
+    ]);
+    exit;
+}
    if(isset($_POST['action'])) {
         if($_POST['action'] === "store"){
 

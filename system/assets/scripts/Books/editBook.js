@@ -34,91 +34,114 @@ $("#coverPreview").attr("src", book.cover ? book.cover : "/BSIT-2E-G1-Group4-MyL
 
 function update() {
     let id = $("#book_id").val();
-    let fileInput = $("#cover")[0];
-    let file = fileInput ? fileInput.files[0] : null;
-    let originalCover = $("#originalCover").val();
-    let currentCover = $("#coverPreview").attr("src");
+    let title = $("#title").val().trim();
 
-    const sendUpdate = (coverData) => {
-        let payload = {
-            cover: coverData,
-            title: $("#title").val(),
-            author: $("#author").val(),
-            isbn: $("#isbn").val(),
-            genre: $("#genre").val(),
-            location: $("#location").val(),
-            availability: $("#availability").val(),
-            publisher: $("#publisher").val(),
-            quantity: $("#quantity").val(),
-            description: $("#description").val()
-            
-        };
+    if (!title) {
+        $("#errTitle").text("Book title is required");
+        return;
+    }
 
-        $.ajax({
-    url: apiE,
-    type: "POST",
-    data: {
-        action: "update",
-        id: id,
-        payload: JSON.stringify(payload)
-    },
+    // Step 1: Check for duplicate title
+    $.ajax({
+        url: apiE,
+        type: "POST",
+        data: { action: "checkDuplicateTitle", title: title },
+        dataType: "json",
+        success: function(res) {
+            let currentBook = books.find(b => b.book_id == id);
+            let isDuplicate = res.exists && currentBook && currentBook.title.toLowerCase() !== title.toLowerCase();
 
-    success: function(response){
+            if (isDuplicate) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Duplicate Book",
+                    text: "A book with this title already exists!"
+                });
+                return; // stop update
+            }
 
-        let resp = JSON.parse(response);
+            // Step 2: Prepare cover
+            let fileInput = $("#cover")[0];
+            let file = fileInput ? fileInput.files[0] : null;
+            let originalCover = $("#originalCover").val();
 
-        if(resp.status === "success"){
+            const sendUpdate = (coverData) => {
+                let payload = {
+                    cover: coverData,
+                    title: $("#title").val(),
+                    author: $("#author").val(),
+                    isbn: $("#isbn").val(),
+                    genre: $("#genre").val(),
+                    location: $("#location").val(),
+                    availability: $("#availability").val(),
+                    publisher: $("#publisher").val(),
+                    quantity: $("#quantity").val(),
+                    description: $("#description").val()
+                };
 
-            Swal.fire({
-                icon: "success",
-                title: "Updated!",
-                text: resp.message,
-                timer: 1500,
-                showConfirmButton: false
-            });
+                $.ajax({
+                    url: apiE,
+                    type: "POST",
+                    data: {
+                        action: "update",
+                        id: id,
+                        payload: JSON.stringify(payload)
+                    },
+                    success: function(response){
+                        let resp = JSON.parse(response);
+                        if(resp.status === "success"){
+                            Swal.fire({
+                                icon: "success",
+                                title: "Updated!",
+                                text: resp.message,
+                                confirmButtonText: "OK"
+                            }).then(() => {
+                                bootstrap.Modal.getInstance(
+                                    document.getElementById('addBookModal')
+                                ).hide();
+                                $("#bookContainer").html("");
+                                get(); // reload books
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Update Failed",
+                                text: resp.message
+                            });
+                        }
+                    },
+                    error: function(err){
+                        console.log(err);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "Something went wrong!"
+                        });
+                    }
+                });
+            };
 
-            bootstrap.Modal.getInstance(
-                document.getElementById('addBookModal')
-            ).hide();
+            if(file){
+                let reader = new FileReader();
+                reader.onload = function(e){
+                    sendUpdate(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sendUpdate(originalCover); // keep original if no new file
+            }
 
-            $("#bookContainer").html("");
-            get();
-
-        } else {
-
+        },
+        error: function(err){
+            console.log(err);
             Swal.fire({
                 icon: "error",
-                title: "Update Failed",
-                text: resp.message
+                title: "Error",
+                text: "Could not check for duplicate title."
             });
-
         }
-    },
-
-    error: function(err){
-        console.log(err);
-
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Something went wrong!"
-        });
-    }
-});
-    };
-
-    if(file){
-        let reader = new FileReader();
-        reader.onload = function(e){
-            sendUpdate(e.target.result);
-        };
-        reader.readAsDataURL(file);
-    } else {
-        // keep original cover if no new file uploaded
-        sendUpdate(originalCover);
-    }
+    });
 }
-
 function validateBookForm() {
     let quantity = Number($("#quantity").val());
     let isValid = true;
