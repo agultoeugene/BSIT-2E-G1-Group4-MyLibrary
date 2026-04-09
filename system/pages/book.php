@@ -108,7 +108,7 @@ requireLogin();
       </div>
 
       <div class="modal-footer">
-        // button to add or cancel Book
+     
         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" onclick="saveBook()">
           Save Book

@@ -7,43 +7,37 @@ include("../config/config.php");
 if(isset($_POST['action'])) {
 
     // ADD NEW STUDENT
-    if ($_POST['action'] === "store") {
+   if ($_POST['action'] === "store") {
 
-        // decode JSON payload from request
-        $payload = json_decode($_POST['payload']);
+    $payload = json_decode($_POST['payload']);
 
-        // check if section already exists
-        $stmt = $conn->prepare("SELECT section_id FROM section WHERE section_name=? AND year_level=?  AND course_id=?");
-        $stmt->bind_param("sii", $payload->section_name, $payload->year, $payload->course);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $stmt = $conn->prepare("CALL insert_student(?,?,?,?,?,?)");
 
-        // if section exists → use existing section_id
-        if($result->num_rows > 0){
-            $section_id = $result->fetch_assoc()['section_id']; 
-        } else {
+    $stmt->bind_param(
+        "ssisii",
+        $payload->fname,
+        $payload->lname,
+        $payload->stud_number,
+        $payload->section_name,
+        $payload->year,
+        $payload->course
+    );
 
-            // insert new section if not exists
-            $stmt = $conn->prepare("INSERT INTO section (section_name, course_id, year_level) VALUES (?, ?, ?)");
-            $stmt->bind_param("sii", $payload->section_name, $payload->course, $payload->year);
-            $stmt->execute();
-
-            // get newly created section id
-            $section_id = $conn->insert_id;
-        }
-
-        // insert student record
-        $stmt = $conn->prepare("INSERT INTO student (fname, lname, student_number, section_id) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssii", $payload->fname, $payload->lname, $payload->stud_number, $section_id);
-
-        if ($stmt->execute()) {
-            echo json_encode(["status"=>"success","message"=>"Student added successfully"]);
-        } else {
-            echo json_encode(["status"=>"failed","message"=>"Failed to add student"]);
-        }
-
-        exit;
+    if ($stmt->execute()) {
+        echo json_encode([
+            "status"=>"success",
+            "message"=>"Student added successfully"
+        ]);
+    } else {
+        echo json_encode([
+            "status"=>"failed",
+            "message"=>$stmt->error
+        ]);
     }
+
+    $stmt->close();
+    $conn->next_result(); 
+}
 
 
     // DELETE STUDENT
@@ -167,52 +161,23 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 
     // GET ALL STUDENTS
-    if ($action == "get") {
+   if ($action == "get") {
 
-        $sql = "
-        SELECT 
-        s.student_id,
-        s.fname,
-        s.lname,
-        s.student_number,
-        sec.year_level AS year,
-        sec.section_name,
-        c.course_name,
-        c.department
-        FROM student s
-        LEFT JOIN section sec ON s.section_id = sec.section_id
-        LEFT JOIN course c ON sec.course_id = c.course_id
-        ORDER BY s.student_id ASC";
+    $sql = "SELECT * FROM student_view ORDER BY student_id ASC";
+    $result = $conn->query($sql);
 
-        $result = $conn->query($sql);
-
-        $students = [];
-
-        while ($row = $result->fetch_assoc()) {
-
-            // combine first name and last name
-            $row['name'] = $row['fname'] . ' ' . $row['lname'];
-
-            $students[] = [
-                'student_id' => $row['student_id'],
-                'name' => $row['name'],
-                'student_number' => $row['student_number'],
-                'year' => $row['year'],
-                'section' => $row['section_name'],
-                'course' => $row['course_name'],
-                'department' => $row['department']
-            ];
-        }
-
-        echo json_encode([
-            "status" => "success",
-            "data" => $students
-        ]);
-
-        exit;
+    $students = [];
+    while ($row = $result->fetch_assoc()) {
+        $students[] = $row;
     }
 
+    echo json_encode([
+        "status" => "success",
+        "data" => $students
+    ]);
 
+    exit;
+}
     // GET ONE STUDENT
     if ($action == "getOne") {
 

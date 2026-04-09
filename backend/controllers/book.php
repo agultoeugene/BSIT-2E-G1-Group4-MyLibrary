@@ -32,51 +32,43 @@ if(isset($_POST['action']) && $_POST['action'] === "checkDuplicateTitle" && isse
 if(isset($_POST['action'])) {
 
     // STORE NEW BOOK
-    if($_POST['action'] === "store"){
+   if($_POST['action'] === "store"){
 
-        // decode JSON payload
-        $payload = json_decode($_POST["payload"]);
+    $payload = json_decode($_POST["payload"]);
 
-        // prepare insert statement
-        $statement = $conn->prepare("
-        INSERT INTO books 
-        (cover, title, author, isbn, genre, location, availability, quantity, total_quantity, publisher, description) 
-        VALUES (?,?,?,?,?,?,?,?,?,?,?)
-        ");
+    // prepare CALL statement
+    $statement = $conn->prepare("CALL insert_book(?,?,?,?,?,?,?,?,?,?,?)");
 
-        // bind parameters
-        $statement->bind_param(
-            "sssssssiiss",
-            $payload->cover,
-            $payload->title,
-            $payload->author,
-            $payload->isbn,
-            $payload->genre,
-            $payload->location,
-            $payload->availability,
-            $payload->quantity,
-            $payload->quantity,    // total_quantity = same as quantity
-            $payload->publisher,
-            $payload->description
-        );
+    $statement->bind_param(
+        "sssssssiiss",
+        $payload->cover,
+        $payload->title,
+        $payload->author,
+        $payload->isbn,
+        $payload->genre,
+        $payload->location,
+        $payload->availability,
+        $payload->quantity,
+        $payload->quantity, // total_quantity
+        $payload->publisher,
+        $payload->description
+    );
 
-        // execute query
-        if ($statement->execute()) {
-
-            echo json_encode([
-                "status" => "success",
-                "message" => "Book added Successfully"
-            ]);
-
-        } else {
-
-            echo json_encode([
-                "status" => "failed",
-                "message" => "Failed to insert"
-            ]);
-
-        }
+    if ($statement->execute()) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Book added Successfully"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "failed",
+            "message" => $statement->error
+        ]);
     }
+
+    $statement->close();
+    $conn->close();
+}
 
 
     // DELETE BOOK
