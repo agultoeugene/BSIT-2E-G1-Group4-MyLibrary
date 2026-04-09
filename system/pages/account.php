@@ -74,6 +74,7 @@ $result = mysqli_query($conn, $sql);
 
 <td class="text-center">
     <?php if ($row['status'] == 'pending'): ?>
+      <!-- approve or delete button -->
         <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['account_id'] ?>">
             Approve
         </button>

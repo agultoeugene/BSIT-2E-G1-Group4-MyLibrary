@@ -1,5 +1,5 @@
 const APID = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
-
+// Function to delete a student record
 function drop(button, student_number) {
 
     Swal.fire({

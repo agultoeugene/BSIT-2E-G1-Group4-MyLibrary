@@ -2,7 +2,7 @@
 include("../config/config.php"); 
 
 header('Content-Type: application/json'); // tell browser it's JSON
-
+// Delete the account record
 if(isset($_POST['id'])) {
 
     $id = $_POST['id'];

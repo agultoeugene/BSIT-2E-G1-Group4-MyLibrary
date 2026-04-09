@@ -1,6 +1,7 @@
 const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
 let students = [];
 let editRow = null;
+// student validation to check if duplicate 
 function storeWithValidation() {
     let studentNumber = $("#studentNumber").val().trim();
 
@@ -19,6 +20,7 @@ function storeWithValidation() {
                 $("#errStudentNumber").text("This student number already exists");
                 return;
             } else {
+                // call the store if not a duplicate
                 store();
             }
         },
@@ -27,6 +29,7 @@ function storeWithValidation() {
         }
     });
 }
+// store function to pass the value to backend
   function store() {
     let fname = $("#firstName").val().trim();
     let lname = $("#lastName").val().trim();

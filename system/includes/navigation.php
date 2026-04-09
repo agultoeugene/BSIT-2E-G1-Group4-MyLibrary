@@ -28,14 +28,14 @@
         <a class="nav-link <?php echo $currentPage == 'book.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php">Books</a>
         <a class="nav-link <?php echo $currentPage == 'student.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/student.php">Student</a>
         <a class="nav-link <?php echo $currentPage == 'borrow.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/borrow.php">Borrow</a>
-        <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' ? 'active' : ''; ?>" href="/../system/pages/manageBorrow.php">Manage Books</a>
+        <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/manageBorrow.php">Manage Books</a>
         <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
           <a class="nav-link <?php echo $currentPage == 'account.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/account.php">Account</a>
         <?php endif; ?>
       </div>
     </div>
 
-    <!-- Desktop search + logout -->
+    <!-- search for book-->
     <form class="d-none d-lg-flex align-items-stretch gap-1 ms-1" role="search" onsubmit="handleSearch(event, true)">
       <input 
         class="form-control" 
@@ -47,7 +47,7 @@
       <button class="btn btn-outline-primary me-2" type="submit">
         <i class="bi bi-search"></i>
       </button>
-      <a href="/../backend/controllers/logout.php" class="btn btn-danger btn-sm d-flex align-items-center px-3" onclick="return confirmLogout(event)">
+      <a href="/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/logout.php" class="btn btn-danger btn-sm d-flex align-items-center px-3" onclick="return confirmLogout(event)">
         Logout <i class="bi bi-box-arrow-right ms-1"></i>
       </a>
     </form>
@@ -66,7 +66,7 @@
     <button class="btn btn-outline-primary w-100" type="submit">
       <i class="bi bi-search"></i> Search
     </button>
-    <a href="/../backend/controllers/logout.php" class="btn btn-danger w-100" onclick="return confirmLogout(event)">
+    <a href="/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/logout.php" class="btn btn-danger w-100" onclick="return confirmLogout(event)">
       Logout <i class="bi bi-box-arrow-right ms-1"></i>
     </a>
   </form>

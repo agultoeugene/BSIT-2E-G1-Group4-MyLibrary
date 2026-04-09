@@ -1,5 +1,3 @@
-
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -42,7 +40,7 @@
           </div>
           <div class="col-lg-6 text-center mt-4 mt-lg-0">
             <img
-              src="https://www.bravetomorrow.net/uploads/2/3/2/6/23261028/published/6920931.png?1694459042"
+              src="https://static.vecteezy.com/system/resources/previews/060/264/719/non_2x/stack-of-books-illustration-free-png.png"
               class="img-fluid book-img"
               alt="Stack of Books"
             />

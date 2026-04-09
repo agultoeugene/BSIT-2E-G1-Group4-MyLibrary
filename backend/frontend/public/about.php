@@ -1,0 +1,62 @@
+<?php
+  include("../includes/navigation.php");
+?> 
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Library - About Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/home.css" />
+    <link rel="stylesheet" href="../assets/css/navigation.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+
+
+<body class="bg-body-tertiary ">
+ 
+    <section class="content-container d-flex align-items-center page-content ">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-4">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold">
+                        About <span class="text-primary">My Library</span>
+                    </h2>
+                    <p class="text-muted fs-4">
+                        Learn more about our mission, purpose, and values
+                    </p>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="img-fluid rounded shadow-sm" alt="Library Illustration" />
+                </div>
+
+                <div class="col-lg-6">
+                    <p class="lead fs-4">
+                        <strong>My Library</strong> is a digital library management platform designed to simplify and organize the borrowing process for both librarians and students.
+                    </p>
+                    <p class="lead fs-4">
+                        The system allows librarians to efficiently monitor borrowed books, manage returns, and maintain an up-to-date overview of the library’s collection. Students benefit from clear access to available resources, ensuring a smooth and transparent borrowing
+                        experience.
+                    </p>
+                    <p class="lead fs-4">
+                        Our goal is to promote learning, responsibility, and accessibility by providing a reliable and user-friendly library system.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+      
+       <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script> 
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+       <script src="../assets/script/login.js"></script> 
+       <script src="../assets/script/register.js"></script> 
+       
+     
+  </body>
+</html>

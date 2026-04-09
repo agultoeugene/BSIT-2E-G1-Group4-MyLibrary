@@ -149,6 +149,7 @@ requireLogin();
         <p class="text-muted">Your request is complete. Please return the book(s) by the deadline. Thank you.</p>
        
         <div class="mt-5 d-flex justify-content-center gap-2">
+            <!-- Borrow another or go to dashboard button -->
             <button class="btn btn-primary px-5 fw-bold" onclick="location.reload()">
                 Borrow Another Book
             </button>

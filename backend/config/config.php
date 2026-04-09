@@ -9,7 +9,7 @@ if (!$conn) {
 }
 function requireLogin() {
     if (!isset($_SESSION['account_id'])) {
-        header("Location: ../../"); // redirect to login
+        header("Location: ../../"); 
         exit();
     }
 }

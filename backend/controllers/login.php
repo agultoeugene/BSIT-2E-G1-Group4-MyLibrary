@@ -1,7 +1,7 @@
 <?php
-
+    // Include the database connection
     include("../config/config.php");
-
+    // to get the value from db and pass to front end
     if(isset($_POST["action"])){
         if($_POST["action"] == "postOne"){
            
@@ -20,7 +20,7 @@
             ]);
             exit();
         }
-
+                // To verify a password
                 if (password_verify($payload->password, $user['password'])) {
                      $_SESSION['user'] = $user['fname']; 
                      $_SESSION['account_id'] = $user['account_id'];

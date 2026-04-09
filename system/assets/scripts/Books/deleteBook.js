@@ -1,4 +1,6 @@
+//  Link where to pass the value
 const apiD = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+//Function to delete a book from the records
 function drop(book_id, index) {
 
     Swal.fire({

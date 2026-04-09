@@ -1,6 +1,7 @@
 const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
 get();
 let books = []; 
+// Function to get the record from the database
 function get() {
     return new Promise((resolve, reject) => {
         let container = $("#bookContainer");
@@ -26,7 +27,7 @@ function get() {
         });
     });
 }
-
+// funtion to displaybook
 function displayBooks(bookList) {
     let container = $("#bookContainer");
     container.html("");
@@ -73,6 +74,7 @@ function showBookModal(index) {
     statusEl.html(`<span class="badge ${badgeClass}">${statusText}</span>`);
     let deleteBtnContainer = $("#deleteBookBtnContainer");
     deleteBtnContainer.html(`
+      
         <button class="btn btn-danger" onclick="drop(${book.book_id}, ${index})">Delete Book</button>
         <button class="btn btn-primary btn-action me-2" onclick="editBook(${book.book_id})">Edit Book</button>
     `);

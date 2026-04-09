@@ -1,5 +1,6 @@
 const apiE = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
 let isEdit = false;
+// Function to edit book
 function editBook(id) {
     isEdit = true;
     
@@ -31,7 +32,7 @@ $("#coverPreview").attr("src", book.cover ? book.cover : "/BSIT-2E-G1-Group4-MyL
     let modal = new bootstrap.Modal(document.getElementById('addBookModal'));
     modal.show();
 }
-
+// funtion to save edit or to  update
 function update() {
     let id = $("#book_id").val();
     let title = $("#title").val().trim();
@@ -128,7 +129,7 @@ function update() {
                 };
                 reader.readAsDataURL(file);
             } else {
-                sendUpdate(originalCover); // keep original if no new file
+                sendUpdate(originalCover);
             }
 
         },
@@ -142,6 +143,7 @@ function update() {
         }
     });
 }
+
 function validateBookForm() {
     let quantity = Number($("#quantity").val());
     let isValid = true;

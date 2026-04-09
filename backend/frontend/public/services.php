@@ -1,0 +1,99 @@
+<?php
+  include("../includes/navigation.php");
+?> 
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Library - About Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/navigation.css">
+     <link rel="stylesheet" href="../assets/css/home.css">
+    <link rel="stylesheet" href="../assets/css/services.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-body-tertiary ">
+ 
+   <section class="content-container d-flex align-items-center page-content">
+      <p class="subtitle">SERVICES</p>
+      <h2>Our Services & Features.</h2>
+
+      <div class="features-container">
+        <!-- Feature 1 -->
+        <div
+          class="feature-card"
+          data-bs-toggle="collapse"
+          data-bs-target="#feature1"
+          aria-expanded="false"
+          style="cursor: pointer"
+        >
+          <img src="https://www.svgrepo.com/show/293865/book-study.svg" />
+          <div class="feature-text">
+            <h3>Book Reports and Tracking</h3>
+            <div class="collapse" id="feature1">
+              <p>Manage and monitor book records and reports efficiently.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div
+          class="feature-card"
+          data-bs-toggle="collapse"
+          data-bs-target="#feature2"
+          aria-expanded="false"
+          style="cursor: pointer"
+        >
+          <img src="https://www.svgrepo.com/show/475285/book.svg" />
+          <div class="feature-text">
+            <h3>Borrowing Request Module</h3>
+            <div class="collapse" id="feature2">
+              <p>Allows students to request and manage borrowing easily.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div
+          class="feature-card"
+          data-bs-toggle="collapse"
+          data-bs-target="#feature3"
+          aria-expanded="false"
+          style="cursor: pointer"
+        >
+          <img src="https://www.svgrepo.com/show/288267/studying-student.svg" />
+          <div class="feature-text">
+            <h3>Student Management</h3>
+            <div class="collapse" id="feature3">
+              <p>Organize student data and records securely.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div
+          class="feature-card"
+          data-bs-toggle="collapse"
+          data-bs-target="#feature4"
+          aria-expanded="false"
+          style="cursor: pointer"
+        >
+          <img src="https://www.svgrepo.com/show/475286/book-2.svg" />
+          <div class="feature-text">
+            <h3>Booking Management</h3>
+            <div class="collapse" id="feature4">
+              <p>Handles reservation schedules and availability tracking.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+        <script src="https://code.jquery.com/jquery-4.0.0.js" integrity="sha256-9fsHeVnKBvqh3FB2HYu7g2xseAZ5MlN6Kz/qnkASV8U=" crossorigin="anonymous"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/script/login.js"></script> 
+        <script src="../assets/script/register.js"></script> 
+    </body>
+</html>

@@ -1,5 +1,7 @@
 <?php
+// Include the database connection
 include("../config/config.php");
+// to store or to record the value to database
     if(isset($_POST["action"])){
         if($_POST["action"] == "store"){
 

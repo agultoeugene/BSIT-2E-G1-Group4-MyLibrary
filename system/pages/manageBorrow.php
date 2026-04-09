@@ -56,37 +56,47 @@ requireLogin();
   </div>
 </div>
 <div class="modal fade" id="returnedSummaryModal" tabindex="-1" aria-labelledby="returnedSummaryModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl"> 
     <div class="modal-content">
+
       <div class="modal-header">
         <h5 class="modal-title fw-bold" id="returnedSummaryModalLabel">Returned Books Summary</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
-        <table class="table table-bordered">
-          <thead class="table-success">
-            <tr>
 
-              <th class="text-center">Name</th>
-              <th class="text-center">Student Number</th>
-              <th class="text-center">Book(s)</th>
-              <th class="text-center">Return Date</th>
-              <th class="text-center">Returned To</th>
-            </tr>
-          </thead>
-          <tbody id="returnedSummaryBody"></tbody>
-        </table>
-        <button id="exportPdfBtn" class="btn btn-danger">Export to PDF</button>
-        <button id="exportExcelBtn" class="btn btn-success">Export to Excel</button>
-       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Summary</button>
+      <div class="modal-body">
+
+        <div class="table-responsive">
+          <table class="table table-bordered custom-table mt-2">
+            <thead class="table-success">
+              <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Student Number</th>
+                <th class="text-center">Book(s)</th>
+                <th class="text-center">Return Date</th>
+                <th class="text-center">Returned To</th>
+              </tr>
+            </thead>
+            <tbody id="returnedSummaryBody"></tbody>
+          </table>
+        </div>
+
+        <div class="mt-3">
+          <button id="exportPdfBtn" class="btn btn-danger">Export to PDF</button>
+          <button id="exportExcelBtn" class="btn btn-success">Export to Excel</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Summary</button>
+        </div>
+
       </div>
+
     </div>
   </div>
 </div>
-
     <table class="table table-bordered custom-table mt-2" style="table-layout: fixed;">
         <thead class="table-primary">
             <tr>
+                <th class="text-center">ID</th>
                 <th class="text-center">Name</th>
                 <th class="text-center">Student Number</th>
                 <th class="text-center">Book(s)</th>

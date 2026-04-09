@@ -114,7 +114,7 @@ requireLogin();
 
                 <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
+                                                                     <!-- Add and edit button -->
                         <button class="btn btn-primary" id="addBtn" onclick="storeWithValidation()">
                             Add Student
                         </button>

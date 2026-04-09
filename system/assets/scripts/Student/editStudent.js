@@ -1,4 +1,5 @@
 const APIU = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
+// Function to edit student
 function edit(id) {
     $.ajax({
         url: APIU,
@@ -34,6 +35,7 @@ function edit(id) {
         }
     });
 }
+// funtion to save edit or to  update
 function update() {
     let payload = {
         fname: $("#firstName").val().trim(),
@@ -116,6 +118,7 @@ function update() {
 });
     });
 }
+// funtion to load the course record from the database and display in dropdown
 function loadCourses(selectedCourseId = null, callback = null) {
     $.ajax({
         url: APIU,
@@ -150,6 +153,7 @@ function loadCourses(selectedCourseId = null, callback = null) {
         }
     });
 }
+// funtion to load the section record from the database and display in dropdown
 function loadSections(selectedSectionId = null, callback = null) {
     $.ajax({
         url: APIU,

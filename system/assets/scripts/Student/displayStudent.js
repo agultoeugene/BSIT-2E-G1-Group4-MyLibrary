@@ -1,6 +1,7 @@
 
 const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
 let stud = []; 
+// Function to get the student record from the backend
 function get(){
      $.ajax({
     url: API,  
@@ -21,6 +22,7 @@ function get(){
     }
 });
 }
+// Function to display student
 function displayStudents(studentList) {
     let container = $("#studentTableBody");
     container.empty();
@@ -34,7 +36,7 @@ function displayStudents(studentList) {
         container.append(createStudentRow(student));
     });
 }
-
+// function to create the table
 function createStudentRow(student) {
     return `
 <tr>
@@ -51,6 +53,7 @@ function createStudentRow(student) {
 </tr>
 `;
 }
+// Function to redirect the student to borrow
 function goToBorrow(studentId) {
  
     const id = Number(studentId);
@@ -64,6 +67,7 @@ function goToBorrow(studentId) {
 
     window.location.href = `/BSIT-2E-G1-Group4-MyLibrary/system/pages/borrow.php?student_id=${id}&student_name=${studentName}`;
 }
+// function to search student
 function handleSearch(event, redirectToBook = false) {
     event.preventDefault();
     
@@ -90,7 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
         handleLiveSearch({ target: input });
     }
 });
-
+// function to ignore case the search input
 function searchStudents(query) {
     if (!query.trim()) {
         displayStudents(stud);
@@ -110,13 +114,13 @@ function searchStudents(query) {
 
     displayStudents(filteredStudents);
 }
-
+// function to handle live search
 function handleLiveStudentSearch(event) {
     const query = event.target.value.trim();
     searchStudents(query);
 }
 
-
+// funtion to clear student search
 function clearStudentSearch() {
     let searchInputs = document.querySelectorAll("input[type='search']");
     searchInputs.forEach(input => input.value = "");

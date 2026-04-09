@@ -1,4 +1,6 @@
+//  Link where to pass the value
 const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+// Function to pass the value to database
 function store() {
     let title = $("#title").val().trim();
     let author = $("#author").val().trim();
@@ -23,7 +25,7 @@ function store() {
     errGenre.text(""); errLoc.text(""); errQuantity.text(""); errDesc.text("");
 
     let isValid = true;
-
+    // Error handling
     if (title == "") { errTitle.text("Book title is required"); isValid = false; }
     if (author == "") { errAuthor.text("Author name is required"); isValid = false; }
     if (isbn == "") { errIsbn.text("Please enter the ISBN"); isValid = false; }
@@ -36,7 +38,7 @@ function store() {
     if (description == "") { errDesc.text("Please enter the Short Description"); isValid = false; }
 
     if (!isValid) return;
-
+// Ajax to pass to check the book duplication
 $.ajax({
     url: API,
     type: "POST",
@@ -66,7 +68,7 @@ $.ajax({
         });
     }
 });
-
+ // function to submit book to data database
     function submitBook() {
         let fileInput = $("#cover")[0];
         let file = fileInput.files[0];

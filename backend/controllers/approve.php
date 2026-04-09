@@ -1,6 +1,6 @@
 <?php
 include("../config/config.php");
-
+// to update the record if the admin approve the account
 if(isset($_POST['id']) && isset($_POST['role'])){
 
     $id = $_POST['id'];
