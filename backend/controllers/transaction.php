@@ -48,68 +48,29 @@ if(isset($_POST['action']) && $_POST['action'] === "storeTransaction") {
 if(isset($_POST['action']) && $_POST['action'] === "returnBook") {
 
     $transaction_id = $_POST['id'];
-
-    // get account who returned the book
     $current_account_id = $_SESSION['account_id'];
 
-    // update borrow record to returned
-    $stmtUpdate = $conn->prepare("
-        UPDATE borrow 
-        SET status='Returned', return_date=?, account_id=? 
-        WHERE borrow_id=?
-    ");
+    $stmt = $conn->prepare("CALL return_book(?, ?)");
 
-    // set return date to today
-    $returnDate = date("Y-m-d");
+    $stmt->bind_param("ii", $transaction_id, $current_account_id);
 
-    $stmtUpdate->bind_param("sii", $returnDate, $current_account_id, $transaction_id);
-    $stmtUpdate->execute();
-    $stmtUpdate->close();
+    if($stmt->execute()) {
 
+        echo json_encode([
+            "status" => "success",
+            "message" => "Book(s) returned successfully."
+        ]);
 
-    // GET ALL BOOKS IN THIS TRANSACTION
-    $stmtBooks = $conn->prepare("
-        SELECT bo.title
-        FROM borrow_details bd
-        JOIN books bo ON bd.book_id = bo.book_id
-        WHERE bd.borrow_id=?
-    ");
+    } else {
 
-    $stmtBooks->bind_param("i", $transaction_id);
-    $stmtBooks->execute();
+        echo json_encode([
+            "status" => "failed",
+            "message" => $stmt->error
+        ]);
 
-    $result = $stmtBooks->get_result();
-
-    $books = [];
-
-    while($row = $result->fetch_assoc()) {
-        $books[] = $row['title'];
     }
 
-    $stmtBooks->close();
-
-
-    // INCREASE QUANTITY FOR EACH RETURNED BOOK
-    foreach($books as $bookTitle) {
-
-        $stmtBook = $conn->prepare("
-            UPDATE books 
-            SET quantity = quantity + 1 
-            WHERE title=?
-        ");
-
-        $stmtBook->bind_param("s", $bookTitle);
-        $stmtBook->execute();
-        $stmtBook->close();
-    }
-
-
-    echo json_encode([
-        "status" => "success",
-        "message" => "Book(s) returned successfully."
-    ]);
-
-    exit;
+    $stmt->close();
 }
 
 // GET ALL TRANSACTIONS

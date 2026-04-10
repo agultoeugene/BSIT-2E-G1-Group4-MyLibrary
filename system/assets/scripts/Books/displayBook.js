@@ -1,25 +1,29 @@
 const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
-get();
-let books = []; 
-// Function to get the record from the database
 function get() {
     return new Promise((resolve, reject) => {
         let container = $("#bookContainer");
         $.ajax({
             url: api,
             type: "GET",
-            data: "action=get",
-            success: function(response) {
-                let resp = JSON.parse(response);
-                if (resp.status == "success") {
-                    books = resp.data;
-                    displayBooks(books);
-                    resolve(books); 
-                } else {      
-                    container.html("<p>No books found.</p>");
-                    resolve([]); 
-                }
-            },
+           data: { action: "get" },
+           success: function(response) {
+    try {
+     
+
+        if (response.status == "success") {
+            books = response.data;
+            displayBooks(books);
+            resolve(books);
+        } else {      
+            container.html("<p>No books found.</p>");
+            resolve([]);
+        }
+
+    } catch (e) {
+        console.log("Invalid JSON:", response); 
+        reject(e);
+    }
+},
             error: function(error) {
                 alert(error);
                 reject(error);

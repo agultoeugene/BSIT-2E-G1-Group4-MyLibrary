@@ -170,36 +170,29 @@ if(isset($_POST['action'])) {
 // HANDLE GET REQUESTS
 if (isset($_GET['action'])) {
 
-    // GET ALL BOOKS
     if ($_GET['action'] == "get") {
+
+        header('Content-Type: application/json');
 
         $statement = $conn->prepare("SELECT * FROM books");
 
-        $statement->execute();
-
-        $result = $statement->get_result();
-
-        $books = [];
-
-        // store all rows
-        while($row = $result->fetch_assoc()){
-            $books[] = $row;
+        if (!$statement) {
+            echo json_encode([
+                "status" => "error",
+                "message" => $conn->error
+            ]);
+            exit;
         }
 
-        // return books list
-        echo json_encode([
-            "status" => "success",
-            "data" => $books
-        ]);
+        if (!$statement->execute()) {
+            echo json_encode([
+                "status" => "error",
+                "message" => $statement->error
+            ]);
+            exit;
+        }
 
-        exit;
-    }
-
-
-    // GET BOOK TITLE, GENRE, AVAILABILITY ONLY
-    if ($_GET['action'] === "get") {
-
-        $result = $conn->query("SELECT title, genre, availability FROM books");
+        $result = $statement->get_result();
 
         $books = [];
 
@@ -211,8 +204,9 @@ if (isset($_GET['action'])) {
             "status" => "success",
             "data" => $books
         ]);
-    }
 
+        exit;
+    }
 }
 
 ?>

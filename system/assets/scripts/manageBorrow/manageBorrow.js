@@ -61,7 +61,7 @@ function loadRecords() {
                     <td>${record.borrow_id}</td>
                     <td>${record.full_name}</td>
                     <td>${record.student_number}</td>
-                    <td>${record.title}</td>
+                    <td>${record.book_title}</td>
                     <td>${record.date_due}</td>
                     <td class="text-center">${statusBadge}</td>
                     <td>
@@ -235,7 +235,7 @@ function loadReturnedSummary() {
                         <td class="text-center">${r.borrow_id}</td>
                         <td class="text-center">${r.full_name}</td>
                         <td class="text-center">${r.student_number}</td>
-                        <td class="text-center">${r.title}</td>
+                        <td class="text-center">${r.book_title}</td>
                         <td class="text-center">${returnDate}</td>
                         <td class="text-center">${r.account_name}</td>
                     </tr>
