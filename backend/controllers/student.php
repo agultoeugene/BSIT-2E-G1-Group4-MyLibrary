@@ -7,151 +7,198 @@ include("../config/config.php");
 if(isset($_POST['action'])) {
 
     // ADD NEW STUDENT
-   if ($_POST['action'] === "store") {
+  if(isset($_POST['action'])) { 
+    // ADD NEW STUDENT 
+if ($_POST['action'] === "store") {
 
-    $payload = json_decode($_POST['payload']);
+    $payload = json_decode($_POST['payload'], true);
 
-    $stmt = $conn->prepare("CALL insert_student(?,?,?,?,?,?)");
+    $stmt = $conn->prepare("CALL insert_student(?,?,?,?,?,?,?)");
+
+  $stmt->bind_param(
+    "ssissii",
+    $payload['fname'],
+    $payload['lname'],
+    $payload['stud_number'],
+    $payload['email'],
+    $payload['section_name'],
+    $payload['year'],
+    $payload['course']
+);
+
+    if ($stmt->execute()) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Student added successfully"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "status" => "failed",
+            "message" => $stmt->error
+        ]);
+
+    }
+
+    $stmt->close();
+    $conn->next_result();
+}
+  }
+
+    // DELETE STUDENT
+   if ($_POST['action'] === 'drop') {
+
+    $stud_number = $_POST['student_number'];
+
+    // 1. Get student_id and section_id
+    $stmt = $conn->prepare("
+        SELECT student_id, section_id 
+        FROM student 
+        WHERE student_number = ?
+    ");
+    $stmt->bind_param("i", $stud_number);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $student_id = null;
+    $section_id = null;
+
+    if ($row = $result->fetch_assoc()) {
+        $student_id = $row['student_id'];
+        $section_id = $row['section_id'];
+    }
+
+    // 2. If student not found
+    if (!$student_id) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Student not found'
+        ]);
+        exit;
+    }
+
+    // 3. CHECK if may existing transactions (IMPORTANT)
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) AS cnt 
+        FROM borrow 
+        WHERE student_id = ?
+    ");
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    $borrowCount = $stmt->get_result()->fetch_assoc();
+
+    if ($borrowCount['cnt'] > 0) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Cannot delete student with existing transactions'
+        ]);
+        exit;
+    }
+
+    // 4. Delete student (SAFE na kasi walang transactions)
+    $stmt = $conn->prepare("
+        DELETE FROM student 
+        WHERE student_id = ?
+    ");
+    $stmt->bind_param("i", $student_id);
+    $success = $stmt->execute();
+
+    // 5. Check if section is empty after deletion
+    if ($success && $section_id) {
+
+        $stmt = $conn->prepare("
+            SELECT COUNT(*) AS cnt 
+            FROM student 
+            WHERE section_id = ?
+        ");
+        $stmt->bind_param("i", $section_id);
+        $stmt->execute();
+        $countResult = $stmt->get_result()->fetch_assoc();
+
+        // delete section if walang students
+        if ($countResult['cnt'] == 0) {
+
+            $stmt = $conn->prepare("
+                DELETE FROM section 
+                WHERE section_id = ?
+            ");
+            $stmt->bind_param("i", $section_id);
+            $stmt->execute();
+        }
+    }
+
+    // 6. Response
+    if ($success) {
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Student deleted successfully'
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Failed to delete student',
+            'sql_error' => $conn->error
+        ]);
+    }
+
+    exit;
+}
+
+
+    // UPDATE STUDENT
+  if ($_POST['action'] == "update") {
+
+    $stud_id = $_POST['id'];
+    $payload = json_decode($_POST['payload'], true);
+
+    // check section
+    $stmt = $conn->prepare("SELECT section_id FROM section WHERE section_name=? AND year_level=? AND course_id=?");
+    $stmt->bind_param("sii", $payload['section_name'], $payload['year'], $payload['course']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $section_id = $result->fetch_assoc()['section_id'];
+    } else {
+        $stmt = $conn->prepare("INSERT INTO section (section_name, course_id, year_level) VALUES (?, ?, ?)");
+        $stmt->bind_param("sii", $payload['section_name'], $payload['course'], $payload['year']);
+        $stmt->execute();
+        $section_id = $conn->insert_id;
+    }
+
+    // update student (WITH EMAIL)
+    $stmt = $conn->prepare("
+        UPDATE student 
+        SET fname=?, lname=?, student_number=?, email=?, section_id=? 
+        WHERE student_id=?
+    ");
 
     $stmt->bind_param(
         "ssisii",
-        $payload->fname,
-        $payload->lname,
-        $payload->stud_number,
-        $payload->section_name,
-        $payload->year,
-        $payload->course
+        $payload['fname'],
+        $payload['lname'],
+        $payload['stud_number'],
+        $payload['email'],
+        $section_id,
+        $stud_id
     );
 
     if ($stmt->execute()) {
         echo json_encode([
-            "status"=>"success",
-            "message"=>"Student added successfully"
+            "status" => "success",
+            "message" => "Student record successfully updated"
         ]);
     } else {
         echo json_encode([
-            "status"=>"failed",
-            "message"=>$stmt->error
+            "status" => "failed",
+            "message" => "Cannot update record"
         ]);
     }
 
-    $stmt->close();
-    $conn->next_result(); 
+    exit;
 }
-
-
-    // DELETE STUDENT
-    if ($_POST['action'] === 'drop') {
-
-        $stud_number = $_POST['student_number'];
-
-        // get student_id and section_id
-        $stmt = $conn->prepare("SELECT student_id, section_id FROM student WHERE student_number=?");
-        $stmt->bind_param("i", $stud_number);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $student_id = null;
-        $section_id = null;
-
-        if($row = $result->fetch_assoc()) {
-            $student_id = $row['student_id'];
-            $section_id = $row['section_id'];
-        }
-
-        // if student not found
-        if (!$student_id) {
-            echo json_encode(['status'=>'error','message'=>'Student not found']);
-            exit;
-        }
-
-        // delete borrow details related to student
-        $stmt = $conn->prepare("DELETE bd FROM borrow_details bd JOIN borrow b ON bd.borrow_id = b.borrow_id WHERE b.student_id = ?");
-        $stmt->bind_param("i", $student_id);
-        $stmt->execute();
-
-        // delete borrow records
-        $stmt = $conn->prepare("DELETE FROM borrow WHERE student_id = ?");
-        $stmt->bind_param("i", $student_id);
-        $stmt->execute();
-
-        // delete student
-        $stmt = $conn->prepare("DELETE FROM student WHERE student_id = ?");
-        $stmt->bind_param("i", $student_id);
-        $success = $stmt->execute();
-
-        // check if section is empty after deleting student
-        if($success && $section_id) {
-
-            $stmt = $conn->prepare("SELECT COUNT(*) AS cnt FROM student WHERE section_id=?");
-            $stmt->bind_param("i", $section_id);
-            $stmt->execute();
-
-            $countResult = $stmt->get_result()->fetch_assoc();
-
-            // delete section if no students left
-            if($countResult['cnt'] == 0) {
-
-                $stmt = $conn->prepare("DELETE FROM section WHERE section_id=?");
-                $stmt->bind_param("i", $section_id);
-                $stmt->execute();
-
-            }
-        }
-
-        // response
-        if($success){
-            echo json_encode(['status'=>'success','message'=>'Student deleted successfully']);
-        } else {
-            echo json_encode(['status'=>'error','message'=>'Failed to delete student', 'sql_error'=>$conn->error]);
-        }
-
-        exit;
-    }
-
-
-    // UPDATE STUDENT
-    if ($_POST['action'] == "update") {
-
-        $stud_id = $_POST['id'];
-        $payload = json_decode($_POST['payload']);
-
-        // check if section exists
-        $stmt = $conn->prepare("SELECT section_id FROM section WHERE section_name=? AND year_level=?  AND course_id=?");
-        $stmt->bind_param("sii", $payload->section_name, $payload->year,$payload->course);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if($result->num_rows > 0){
-            $section_id = $result->fetch_assoc()['section_id'];
-        } else {
-
-            // create section if not exists
-            $stmt = $conn->prepare("INSERT INTO section (section_name, course_id, year_level) VALUES (?, ?, ?)");
-            $stmt->bind_param("sii", $payload->section_name, $payload->course, $payload->year);
-            $stmt->execute();
-
-            $section_id = $conn->insert_id;
-        }
-
-        // update student record
-        $stmt = $conn->prepare("UPDATE student SET fname=?, lname=?, student_number=?, section_id=? WHERE student_id=?");
-        $stmt->bind_param("ssiii", $payload->fname, $payload->lname, $payload->stud_number, $section_id, $stud_id);
-
-        if ($stmt->execute()) {
-            echo json_encode([
-                "status" => "success",
-                "message" => "Student record successfully updated"
-            ]);
-        } else {
-            echo json_encode([
-                "status" => "failed",
-                "message" => "Cannot update record"
-            ]);
-        }
-
-        exit;
-    }
 }
 
 

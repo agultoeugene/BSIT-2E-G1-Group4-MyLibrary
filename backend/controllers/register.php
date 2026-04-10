@@ -8,8 +8,8 @@ include("../config/config.php");
             $payload = json_decode($_POST["payload"]);
             $hashPass = password_hash($payload->passwordS, PASSWORD_DEFAULT);
 
-            $statement = $conn->prepare("INSERT INTO accounts (fname, lname, email, password) VALUES (?, ?, ?, ?)");
-            $statement->bind_param("ssss", $payload->fName, $payload->lName, $payload->emailS, $hashPass);
+            $statement = $conn->prepare("INSERT INTO accounts (fname, lname, email, password, role) VALUES (?, ?, ?, ?, ?)");
+            $statement->bind_param("sssss", $payload->fName, $payload->lName, $payload->emailS, $hashPass,  $payload->role);
 
             if ($statement->execute()) {
 			echo json_encode([

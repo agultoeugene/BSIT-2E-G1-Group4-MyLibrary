@@ -13,13 +13,7 @@
 
             if($result->num_rows > 0){
             $user = $result->fetch_assoc();
-               if($user['status'] != 'approved'){
-            echo json_encode([
-                "status" => "pending",
-                "message" => "Your account is still pending approval."
-            ]);
-            exit();
-        }
+         
                 // To verify a password
                 if (password_verify($payload->password, $user['password'])) {
                      $_SESSION['user'] = $user['fname']; 

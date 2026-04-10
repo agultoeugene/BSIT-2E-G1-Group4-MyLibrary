@@ -7,8 +7,6 @@ if ($_SESSION['role'] != 'Admin') {
     exit();
 }
 
-$sql = "SELECT * FROM accounts WHERE status='pending'";
-$result = mysqli_query($conn, $sql);
 ?>
 
 <!doctype html>
@@ -33,66 +31,109 @@ $result = mysqli_query($conn, $sql);
 
   <body class="bg-body-tertiary">
     <?php include("../includes/navigation.php"); ?>
-    <div class="container mt-3 pt-5 page-content">
-      <h1 class="mb-4 text-primary text-center">Pending Accounts</h1>
+<div class="container mt-3 pt-5 page-content">
 
+  <h1 class="mb-4 text-primary text-center">Accounts</h1>
 
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <table class="table ">
-            <thead class="table-success">
-              <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center" >First Name</th>
-                <th class="text-center">Last Name</th>
-                <th class="text-center">Email</th>
+  <!-- Create Account Button -->
+  <div class="d-flex justify-content-end mb-3">
+    <button 
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#createAccountModal"
+    >
+      Create Account
+    </button>
+  </div>
 
-                <th class="text-center">Role</th>
-                <th class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-        <?php while($row = mysqli_fetch_assoc($result)) { ?>
-            <tr>
-                <td class="text-center"><?= $row['account_id'] ?></td>
-                <td class="text-center"><?= $row['fname'] ?></td>
-                <td class="text-center"><?= $row['lname'] ?></td>
-                <td class="text-center"><?= $row['email'] ?></td>
+  <!-- Accounts Table -->
+  <table class="table table-bordered table-hover text-center">
+    <thead class="table-primary">
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
 
+    <tbody id="accountsTable">
+    </tbody>
 
-    <?php if ($row['status'] == 'pending'): ?>
+  </table>
 
-<td class="text-center">
-    <select class="form-select form-select-sm role-select mx-auto" style="width:150px;" data-id="<?= $row['account_id'] ?>">
-        <option value="">Select Role</option>
-        <option value="Librarian">Librarian</option>
-        <option value="Admin">Admin</option>
-    </select>
-</td>
-
-    <?php endif; ?>
-
-<td class="text-center">
-    <?php if ($row['status'] == 'pending'): ?>
-      <!-- approve or delete button -->
-        <button class="btn btn-success btn-sm approve-btn" data-id="<?= $row['account_id'] ?>">
-            Approve
-        </button>
-
-        <button class="btn btn-danger btn-sm delete-btn" data-id="<?= $row['account_id'] ?>">
-            Delete
-        </button>
-    <?php else: ?>
-        <span class="text-muted">No Action</span>
-    <?php endif; ?>
-</td>
-            </tr>
-        <?php } ?>
-        </tbody>
-    </table>
 </div>
+
+<div class="modal fade" id="createAccountModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered"> 
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Create Account</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <form id="signupForm">
+
+          <div class="mb-2">
+            <label class="form-label">First Name</label>
+            <input id="fName" type="text" class="form-control">
+            <small id="errfName" class="text-danger"></small>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Last Name</label>
+            <input id="lName" type="text" class="form-control">
+            <small id="errlName" class="text-danger"></small>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Role</label>
+            <select id="role" class="form-select">
+              <option value="">Select Role</option>
+              <option value="Librarian">Librarian</option>
+              <option value="Admin">Admin</option>
+            </select>
+
+            <small id="errRole" class="text-danger"></small>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Email</label>
+            <input id="emailSignup" type="email" class="form-control">
+            <small id="errEmailS" class="text-danger"></small>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Password</label>
+            <input id="passwordSignup" type="password" class="form-control">
+            <small id="errPasswordS" class="text-danger"></small>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Confirm Password</label>
+            <input id="confirmPass" type="password" class="form-control">
+            <small id="errConPass" class="text-danger"></small>
+          </div>
+
+          <button class="btn btn-success w-100 mt-3">
+            Sign Up
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+  
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="../assets/scripts/Books/displayBook.js"></script>
- <script src="../assets/scripts/account.js"></script>
+    <script src="../assets/scripts/account.js"></script>
+     <script src="../assets/scripts/register.js"></script>
 </body>
 </html>

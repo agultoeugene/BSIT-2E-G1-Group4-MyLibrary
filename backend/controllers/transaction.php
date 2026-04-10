@@ -4,36 +4,76 @@
 include("../config/config.php");
 
 
-// STORE BORROW TRANSACTION
-if(isset($_POST['action']) && $_POST['action'] === "storeTransaction") {
+if (isset($_POST['action']) && $_POST['action'] === "storeTransaction") {
 
     $payload = json_decode($_POST['payload'], true);
+
     $account_id = $_SESSION['account_id'];
     $student_id = $payload['student_id'];
-    $book_id = $payload['book_id']; // single book
+    $book_id = $payload['book_id'];
     $date_borrow = $payload['date_borrow'];
     $date_due = $payload['date_due'];
 
-    // call stored procedure
-    $stmt = $conn->prepare("CALL BorrowBook(?, ?, ?, ?, ?)");
-    $stmt->bind_param("iiiss", $student_id, $account_id, $book_id, $date_borrow, $date_due);
+    $stmt = $conn->prepare("
+        SELECT MAX(penalty_date) AS last_penalty
+        FROM (
+            SELECT date_due AS penalty_date
+            FROM borrow
+            WHERE student_id = ?
+            AND return_date IS NULL
+            AND date_due < NOW()
 
-    if($stmt->execute()) {
+            UNION ALL
 
-        // fetch result from procedure
-        $result = $stmt->get_result();
-        if($result) {
-            $response = $result->fetch_assoc();
-            echo json_encode($response);
-        } else {
-            // if procedure only selects messages
+            SELECT return_date AS penalty_date
+            FROM borrow
+            WHERE student_id = ?
+            AND return_date IS NOT NULL
+            AND return_date > date_due
+        ) AS penalties
+    ");
+
+    $stmt->bind_param("ii", $student_id, $student_id);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+
+    $last_penalty = $result['last_penalty'];
+
+    if ($last_penalty) {
+
+        $today = new DateTime();
+        $last = new DateTime($last_penalty);
+
+        $last->modify('+7 days');
+
+        if ($today < $last) {
             echo json_encode([
-                "status" => "success",
-                "message" => "Book borrowed successfully."
+                "status" => "error",
+                "message" => "Blocked: You are under 7-day borrowing penalty."
             ]);
+            exit;
         }
+    }
+
+    $stmt = $conn->prepare("CALL BorrowBook(?, ?, ?, ?, ?)");
+    $stmt->bind_param(
+        "iiiss",
+        $student_id,
+        $account_id,
+        $book_id,
+        $date_borrow,
+        $date_due
+    );
+
+    if ($stmt->execute()) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Book borrowed successfully."
+        ]);
 
     } else {
+
         echo json_encode([
             "status" => "error",
             "message" => "Failed to execute borrow procedure."
@@ -43,7 +83,6 @@ if(isset($_POST['action']) && $_POST['action'] === "storeTransaction") {
     $stmt->close();
     exit;
 }
-
 // RETURN BOOK
 if(isset($_POST['action']) && $_POST['action'] === "returnBook") {
 

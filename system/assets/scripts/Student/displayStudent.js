@@ -45,6 +45,8 @@ function createStudentRow(student) {
     <td class="text-center">${student.year}${student.section}</td>
     <td class="text-center">${student.course}</td>
     <td class="text-center">${student.department}</td>
+     <td class="text-center">${student.email}</td>
+    
     <td class="text-center">
         <button class="btn btn-success btn-sm" style="width:60px;" onclick="edit('${student.student_id}')">Edit</button>
         <button class="btn btn-danger btn-sm" style="width:60px;" onclick="drop(this, '${student.student_number}')">Delete</button>

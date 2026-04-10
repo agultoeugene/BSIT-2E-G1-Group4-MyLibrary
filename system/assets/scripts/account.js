@@ -1,68 +1,126 @@
-// APPROVE ACCOUNT BUTTON
-$(document).on("click", ".approve-btn", function () {
+const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/account.php";
+const APID = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/delete.php";
+ function get(){
+    return $.ajax({
+        url: API,
+        type: 'GET',
+        data: { action: "get" },
+        dataType: 'json',
+        success: function(response) {
 
-    // Get account ID from button data attribute
-    let id = $(this).data("id");
+            if (response.status === 'success') {
+                acc = response.data;
+                displayAccounts(acc);
+            }
 
-    // Get selected role from dropdown with same ID
-    let role = $(`.role-select[data-id='${id}']`).val();
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
 
-    // Check if role is selected
-    if(!role){
-        alert("Please select a role first.");
+
+
+// display accounts
+function displayAccounts(accountList) {
+    let container = $("#accountsTable");
+    container.empty();
+
+    if (accountList.length === 0) {
+        container.html("<tr><td colspan='5' class='text-center'>No accounts found.</td></tr>");
         return;
     }
 
-    // Confirm approval action
-    if(confirm("Approve this account?")){
-
-        // Send AJAX request to approve account
-        $.ajax({
-            url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/approve.php",
-            type: "POST",
-            data: {
-                id: id,
-                role: role
-            },
-
-            // If approval successful
-            success: function(response){
-                alert("Account Approved!");
-                location.reload(); // reload page to refresh list
-            }
-        });
-
-    }
-});
+    accountList.forEach(account => {
+        container.append(createAccountRow(account));
+    });
+}
 
 
-// DELETE ACCOUNT BUTTON
-$(document).on("click", ".delete-btn", function () {
+// create table row
+function createAccountRow(account) {
+    return `
+<tr>
+    <td class="text-center">${account.fname}</td>
+    <td class="text-center">${account.lname}</td>
+    <td class="text-center">${account.email}</td>
+    <td class="text-center">${account.role}</td>
+    <td class="text-center">
+       <button 
+            class="btn btn-danger btn-sm deleteAccount"
+            data-id="${account.account_id}">
+            Delete
+        </button>
+    </td>
+</tr>
+`;
+}
+$(document).on("click", ".deleteAccount", function () {
 
-    // Get account ID
     let id = $(this).data("id");
-
-    // Get table row of the clicked button
     let row = $(this).closest("tr");
 
-    // Confirm delete action
-    if(confirm("Delete this account?")){
+    Swal.fire({
+        title: "Are you sure?",
+        text: "This account will be permanently deleted!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#d33"
+    }).then((result) => {
 
-        // Send AJAX request to delete account
-        $.ajax({
-            url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/delete.php",
-            type: "POST",
-            data: { id: id },
+        if (result.isConfirmed) {
 
-            // If deletion successful
-            success: function(){
+            $.ajax({
+                url: APID,
+                type: "POST",
+                data: {
+                    action: "delete",
+                    id: id
+                },
+                dataType: "json",
+                success: function(response) {
 
-                alert("Account Deleted!");
+                    if(response.status === "success") {
 
-                // Remove row from table without refreshing
-                row.remove();
-            }
-        });
+                        Swal.fire({
+                            icon: "success",
+                            title: "Deleted!",
+                            text: response.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
 
-    }
+                        row.remove(); 
+
+                    } else {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Failed",
+                            text: response.message
+                        });
+
+                    }
+
+                },
+                error: function(xhr) {
+
+                    console.log("ERROR RESPONSE:");
+                    console.log(xhr.responseText);
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Something went wrong!"
+                    });
+
+                }
+            });
+
+        }
+    });
+
 });

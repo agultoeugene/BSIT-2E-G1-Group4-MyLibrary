@@ -1,0 +1,155 @@
+const APIR = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/register.php";
+
+// Event listener
+$(document).ready(function() {
+    $("#signupForm").on("submit", function(e){
+        e.preventDefault(); 
+        store(); 
+    });
+});
+
+function store() {
+
+    let fName = $("#fName").val();
+    let lName = $("#lName").val();
+    let role = $("#role").val();
+    let emailS = $("#emailSignup").val();
+    let passwordS = $("#passwordSignup").val();
+    let confirmPass = $("#confirmPass").val();
+
+    let errfName = $("#errfName");
+    let errlName = $("#errlName");
+    let errRole = $("#errRole");
+    let errEmailS = $("#errEmailS");
+    let errPasswordS = $("#errPasswordS");
+    let errConPass = $("#errConPass");
+
+    errfName.text("");
+    errlName.text("");
+    errRole.text("");
+    errEmailS.text("");
+    errPasswordS.text("");
+    errConPass.text("");
+
+    if (fName == "") {
+        errfName.text("Firstname is required!");
+        return false;
+    }
+
+    if (lName == "") {
+        errlName.text("Lastname is required!");
+        return false;
+    }
+
+    if (role == "") {
+        errRole.text("Role is required!");
+        return false;
+    }
+
+    if (emailS == "") {
+        errEmailS.text("Email is required!");
+        return false;
+    }
+
+    if (passwordS == "") {
+        errPasswordS.text("Password is required!");
+        return false;
+    }
+
+    if (confirmPass == "") {
+        errConPass.text("Password is required!");
+        return false;
+    } else {
+        if (passwordS != confirmPass) {
+            errConPass.text("Password didn't match!");
+            return false;
+        }
+    }
+
+    let payload = {
+        fName: fName,
+        lName: lName,
+        role: role,
+        emailS: emailS,
+        passwordS: passwordS
+    }
+
+   $.ajax({
+    url: APIR,
+    type: "POST",
+    data: {
+        action: "store",
+        payload: JSON.stringify(payload)
+    },
+    dataType: "json",
+    success: function(response) {
+
+        if (response.status == "success") {
+
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: response.message,
+                confirmButtonText: "OK"
+            }).then(() => {
+                location.reload(); 
+            });
+
+        } else {
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: response.message
+            });
+
+        }
+
+    },
+    error: function(error) {
+        console.log(error);
+    }
+});
+}
+
+// clear errors when typing
+function clearError(inputId, errorId) {
+    const input = $(inputId);
+    const error = $(errorId);
+
+    input.on("input", function () {
+        if ($(this).val().trim() !== "") {
+            error.text("");
+        }
+    });
+}
+
+$(document).ready(function() {
+    clearError("#fName", "#errfName");
+    clearError("#lName", "#errlName");
+    clearError("#emailSignup", "#errEmailS");
+    clearError("#passwordSignup", "#errPasswordS");
+    clearError("#confirmPass", "#errConPass");
+});
+
+$('#signupModal').on('hidden.bs.modal', function () {
+    clearForm();
+});
+
+// clear form
+function clearForm() {
+
+    $("#fName").val("");
+    $("#lName").val("");
+    $("#role").val("");
+    $("#emailSignup").val("");
+    $("#passwordSignup").val("");
+    $("#confirmPass").val("");
+
+    $("#errfName").text("");
+    $("#errlName").text("");
+    $("#errRole").text("");
+    $("#errEmailS").text("");
+    $("#errPasswordS").text("");
+    $("#errConPass").text("");
+}

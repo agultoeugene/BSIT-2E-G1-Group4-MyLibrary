@@ -1,5 +1,4 @@
 const APIU = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
-// Function to edit student
 function edit(id) {
     $.ajax({
         url: APIU,
@@ -16,6 +15,7 @@ function edit(id) {
                 $("#studentNumber").val(response.data.student_number);
                 $("#yearGrade").val(response.data.year_level);
                 $("#studentId").val(response.data.student_id);
+                $("#email").val(response.data.email);
 
                 // pass the selected course to loadCourses
                 loadCourses(response.data.course_id, function() {
@@ -35,90 +35,123 @@ function edit(id) {
         }
     });
 }
-// funtion to save edit or to  update
 function update() {
+
     let payload = {
         fname: $("#firstName").val().trim(),
         lname: $("#lastName").val().trim(),
         stud_number: parseInt($("#studentNumber").val().trim()),
+        email: $("#email").val().trim(),  
         year: $("#yearGrade").val().trim(),
-        course: parseInt($("#course_id").val()), 
+        course: parseInt($("#course_id").val()),
         section_name: $("#section_id option:selected").text().trim()
     };
 
     let id = $("#studentId").val();
     let isValid = true;
+
     $(".error").text("");
 
-    if (payload.fname === "") { $("#errFirstName").text("First name required"); isValid = false; }
-    if (payload.lname === "") { $("#errLastName").text("Last name required"); isValid = false; }
-    if (!payload.stud_number) { $("#errStudentNumber").text("Student number required"); isValid = false; }
-    if (payload.year === "") { $("#errYearGrade").text("Year required"); isValid = false; }
-    if (parseInt(payload.year) <=0 || parseInt(payload.year) >= 6) { $("#errYearGrade").text("Invalid year"); isValid = false; }
-    if (!payload.course) { $("#errCourse").text("Course required"); isValid = false; }
+    if (payload.fname === "") {
+        $("#errFirstName").text("First name required");
+        isValid = false;
+    }
+
+    if (payload.lname === "") {
+        $("#errLastName").text("Last name required");
+        isValid = false;
+    }
+
+    if (!payload.stud_number) {
+        $("#errStudentNumber").text("Student number required");
+        isValid = false;
+    }
+
+    if (payload.email === "") {   
+        $("#errEmail").text("Email required");
+        isValid = false;
+    } else if (!payload.email.includes("@")) {
+        $("#errEmail").text("Invalid email format");
+        isValid = false;
+    }
+
+    if (payload.year === "") {
+        $("#errYearGrade").text("Year required");
+        isValid = false;
+    }
+
+    if (parseInt(payload.year) <= 0 || parseInt(payload.year) >= 6) {
+        $("#errYearGrade").text("Invalid year");
+        isValid = false;
+    }
+
+    if (!payload.course) {
+        $("#errCourse").text("Course required");
+        isValid = false;
+    }
 
     if (!isValid) return;
 
-    // Check uniqueness before updating
+    // Check uniqueness
     checkStudentNumberUnique(payload.stud_number, id, function(isUnique) {
+
         if (!isUnique) {
             $("#errStudentNumber").text("Student number already exists!");
             return;
         }
 
-        // Proceed with update
-       $.ajax({
-    url: APIU,
-    type: "POST",
-    data: {
-        action: "update",
-        id: id,
-        payload: JSON.stringify(payload)
-    },
-    dataType: "json",
+        $.ajax({
+            url: APIU,
+            type: "POST",
+            data: {
+                action: "update",
+                id: id,
+                payload: JSON.stringify(payload)
+            },
+            dataType: "json",
 
-    success: function(response) {
+            success: function(response) {
 
-        if (response.status === "success") {
+                if (response.status === "success") {
 
-            Swal.fire({
-                icon: "success",
-                title: "Updated!",
-                text: response.message,
-                timer: 1500,
-                showConfirmButton: false
-            });
+                    Swal.fire({
+                        icon: "success",
+                        title: "Updated!",
+                        text: response.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
 
-            let modalEl = document.getElementById("addStudentModal");
-            let modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
+                    bootstrap.Modal.getInstance(
+                        document.getElementById("addStudentModal")
+                    ).hide();
 
-            get(); // refresh student list
+                    get();
 
-        } else {
+                } else {
 
-            Swal.fire({
-                icon: "error",
-                title: "Update Failed",
-                text: response.message
-            });
+                    Swal.fire({
+                        icon: "error",
+                        title: "Update Failed",
+                        text: response.message
+                    });
 
-        }
-    },
+                }
+            },
 
-    error: function(err) {
-        console.error(err);
+            error: function(err) {
+                console.error(err);
 
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Failed to update student."
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Failed to update student."
+                });
+            }
         });
-    }
-});
+
     });
 }
-// funtion to load the course record from the database and display in dropdown
 function loadCourses(selectedCourseId = null, callback = null) {
     $.ajax({
         url: APIU,
@@ -153,7 +186,6 @@ function loadCourses(selectedCourseId = null, callback = null) {
         }
     });
 }
-// funtion to load the section record from the database and display in dropdown
 function loadSections(selectedSectionId = null, callback = null) {
     $.ajax({
         url: APIU,

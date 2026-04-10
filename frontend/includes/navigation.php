@@ -17,15 +17,7 @@
           >
             LOGIN
           </button>
-          <!-- Sign up button -->
-          <button
-            id="signup-btn"
-            class="btn btn-outline-primary signup-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#signupModal"
-          >
-            SIGN UP
-          </button>
+        
           <button
             class="navbar-toggler"
             type="button"
@@ -57,20 +49,13 @@
         <div class="d-none d-lg-flex gap-4">
           <button
             id="login-btn-create"
-            class="btn btn-outline-primary login-btn"
+            class="btn btn-outline-primary login-btn  w-200"
             data-bs-toggle="modal"
             data-bs-target="#loginModal"
           >
             LOGIN
           </button>
-          <button
-            id="signup-btn-create"
-            class="btn btn-outline-primary signup-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#signupModal"
-          >
-            SIGN UP
-          </button>
+        
         </div>
       </div>
     </nav>
@@ -124,45 +109,7 @@
             ></button>
           </div>
 
-          <div class="modal-body">
-          <form id="signupForm">
-              <div class="mb-1">
-                <label class="form-label">First Name</label>
-                <input id="fName" type="text" class="form-control" />
-              </div>
-               <small id="errfName" class="text-danger"></small>
-
-               <div class="mb-1">
-                <label class="form-label">Last Name</label>
-                <input id="lName" type="text" class="form-control" />
-              </div>
-               <small id="errlName" class="text-danger"></small>
-
-              <div class="mb-1">
-                <label class="form-label">Email</label>
-                <input id="emailSignup" type="email" class="form-control" />
-              </div>
-               <small id="errEmailS" class="text-danger"></small>
-
-              <div class="mb-1">
-                <label class="form-label">Password</label>
-                <input
-                  id="passwordSignup"
-                  type="password"
-                  class="form-control"
-                />
-              </div>
-               <small id="errPasswordS" class="text-danger"></small>
-
-              <div class="mb-1">
-                <label class="form-label">Confirm Password</label>
-                <input id="confirmPass" type="password" class="form-control" />
-              </div>
-               <small id="errConPass" class="text-danger"></small>
-             
-              <button class="btn btn-success w-100 mt-4">Sign Up</button>
-            </form>
-          </div>
+         
         </div>
       </div>
     </div>

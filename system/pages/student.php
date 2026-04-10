@@ -30,6 +30,7 @@ requireLogin();
             <th class="text-center">Year/Section</th>
             <th class="text-center">Course</th>
             <th class="text-center">College</th>
+            <th class="text-center">Email</th>
             <th class="text-center">Action</th>
         </tr>
     </thead>
@@ -72,7 +73,12 @@ requireLogin();
                     <input type="text" id="studentNumber" class="form-control" />
                     <small class="text-danger" id="errStudentNumber"></small>
                 </div>
-
+                <!-- Email -->
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" />
+                <small class="text-danger" id="errEmail"></small>
+            </div>
                 <!-- Year/Grade -->
                 <div class="col-md-6">
                     <label for="yearGrade" class="form-label">Year / Grade</label>
