@@ -62,7 +62,8 @@ function postOne() {
            if (response.status == "success") {
            Swal.fire({
             icon: "success",
-            title: response.message,
+            title: "Login Successfully",
+            text: response.message,
             timer: 1500,
             showConfirmButton: false
         }).then(() => {
@@ -72,7 +73,7 @@ function postOne() {
         } else {
 
             Swal.fire({
-                title: "Error!",
+                title: "Login Failed!",
                 text: response.message,
                 icon: "error"
             });

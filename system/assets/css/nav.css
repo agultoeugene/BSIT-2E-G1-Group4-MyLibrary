@@ -2,6 +2,36 @@ body {
   padding-top: 100px;
 }
 
+.btn {
+  padding: 0.55rem 1rem;
+  font-size: 0.92rem;
+  border-radius: 0.85rem;
+  min-height: 40px;
+}
+
+.btn i {
+  margin-right: 0.35rem;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+}
+
+.navbar .btn-danger {
+  padding: 0.45rem 1rem;
+}
+
+.navbar .btn-danger.btn-sm {
+  padding: 0.35rem 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .btn {
+    width: 100%;
+  }
+}
+
 .navbar-nav .nav-link.active {
   position: relative;
   font-weight: 500;
