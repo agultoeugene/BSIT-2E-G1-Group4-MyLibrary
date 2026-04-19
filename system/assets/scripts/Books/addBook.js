@@ -1,5 +1,5 @@
-//  Link where to pass the value
-const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+﻿//  Link where to pass the value
+const API = "/Library/backend/controllers/book.php";
 // Function to pass the value to database
 function store() {
     let title = $("#title").val().trim();
@@ -72,7 +72,7 @@ $.ajax({
     function submitBook() {
         let fileInput = $("#cover")[0];
         let file = fileInput.files[0];
-        let cover = "/BSIT-2E-G1-Group4-MyLibrary/system/assets/scripts/Books/placeholderimg/placeholder.png";
+        let cover = "/Library/system/assets/scripts/Books/placeholderimg/placeholder.png";
 
         const sendAjax = (coverData) => {
             let payload = {
@@ -93,7 +93,7 @@ $.ajax({
                             confirmButtonText: "OK"
                         }).then(() => {
                             hideModalAndDisplayBook();
-                            window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php";
+                            window.location.href = "/Library/system/pages/book.php";
                         });
                     } else {
                         Swal.fire({ icon: "error", title: "Error", text: response.message });

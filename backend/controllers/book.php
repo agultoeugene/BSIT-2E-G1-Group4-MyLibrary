@@ -72,36 +72,54 @@ if(isset($_POST['action'])) {
 
 
     // DELETE BOOK
-    if ($_POST['action'] == "drop") {
+   if ($_POST['action'] == "drop") {
 
-        // get book id
-        $id = $_POST['book_id'];
+    $id = $_POST['book_id'];
 
-        // delete related borrow records first
-        $stmt1 = $conn->prepare("DELETE FROM borrow_details WHERE book_id = ?");
-        $stmt1->bind_param("i", $id);
-        $stmt1->execute();
+    // Check if book is currently borrowed
+    $check = $conn->prepare("
+        SELECT b.borrow_id
+        FROM borrow_details bd
+        JOIN borrow b ON bd.borrow_id = b.borrow_id
+        WHERE bd.book_id = ? AND b.status = 'Borrowed'
+    ");
+    $check->bind_param("i", $id);
+    $check->execute();
+    $result = $check->get_result();
 
-        // delete book from books table
-        $stmt2 = $conn->prepare("DELETE FROM books WHERE book_id = ?");
-        $stmt2->bind_param("i", $id);
+    if ($result->num_rows > 0) {
 
-        if ($stmt2->execute()) {
-
-            echo json_encode([
-                "status" => "success",
-                "message" => "Book successfully deleted"
-            ]);
-
-        } else {
-
-            echo json_encode([
-                "status" => "failed",
-                "message" => "Cannot delete record"
-            ]);
-
-        }
+        echo json_encode([
+            "status" => "failed",
+            "message" => "Cannot delete book. It is currently borrowed."
+        ]);
+        exit;
     }
+
+    // delete related borrow details
+    $stmt1 = $conn->prepare("DELETE FROM borrow_details WHERE book_id = ?");
+    $stmt1->bind_param("i", $id);
+    $stmt1->execute();
+
+    // delete book
+    $stmt2 = $conn->prepare("DELETE FROM books WHERE book_id = ?");
+    $stmt2->bind_param("i", $id);
+
+    if ($stmt2->execute()) {
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Book successfully deleted"
+        ]);
+
+    } else {
+
+        echo json_encode([
+            "status" => "failed",
+            "message" => "Cannot delete record"
+        ]);
+    }
+}
 
 
     // UPDATE BOOK

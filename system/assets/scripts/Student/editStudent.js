@@ -1,4 +1,6 @@
-const APIU = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
+﻿const APIU = "/Library/backend/controllers/student.php";
+let originalStudentNumber = "";
+
 function edit(id) {
     $.ajax({
         url: APIU,
@@ -13,6 +15,7 @@ function edit(id) {
                 $("#firstName").val(response.data.fname);
                 $("#lastName").val(response.data.lname);
                 $("#studentNumber").val(response.data.student_number);
+                originalStudentNumber = response.data.student_number;
                 $("#yearGrade").val(response.data.year_level);
                 $("#studentId").val(response.data.student_id);
                 $("#email").val(response.data.email);
@@ -40,7 +43,7 @@ function update() {
     let payload = {
         fname: $("#firstName").val().trim(),
         lname: $("#lastName").val().trim(),
-        stud_number: parseInt($("#studentNumber").val().trim()),
+        stud_number: $("#studentNumber").val().trim(),
         email: $("#email").val().trim(),  
         year: $("#yearGrade").val().trim(),
         course: parseInt($("#course_id").val()),
@@ -92,14 +95,7 @@ function update() {
 
     if (!isValid) return;
 
-    // Check uniqueness
-    checkStudentNumberUnique(payload.stud_number, id, function(isUnique) {
-
-        if (!isUnique) {
-            $("#errStudentNumber").text("Student number already exists!");
-            return;
-        }
-
+    function submitUpdate() {
         $.ajax({
             url: APIU,
             type: "POST",
@@ -109,11 +105,8 @@ function update() {
                 payload: JSON.stringify(payload)
             },
             dataType: "json",
-
             success: function(response) {
-
                 if (response.status === "success") {
-
                     Swal.fire({
                         icon: "success",
                         title: "Updated!",
@@ -129,19 +122,15 @@ function update() {
                     get();
 
                 } else {
-
                     Swal.fire({
                         icon: "error",
                         title: "Update Failed",
                         text: response.message
                     });
-
                 }
             },
-
             error: function(err) {
                 console.error(err);
-
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -149,7 +138,22 @@ function update() {
                 });
             }
         });
+    }
 
+    if (payload.stud_number === originalStudentNumber) {
+        submitUpdate();
+        return;
+    }
+
+    // Check uniqueness
+    checkStudentNumberUnique(payload.stud_number, id, function(isUnique) {
+
+        if (!isUnique) {
+            $("#errStudentNumber").text("Student number already exists!");
+            return;
+        }
+
+        submitUpdate();
     });
 }
 function loadCourses(selectedCourseId = null, callback = null) {

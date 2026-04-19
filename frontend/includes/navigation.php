@@ -1,4 +1,4 @@
- <nav
+﻿ <nav
       class="navbar navbar-expand-lg nav-container py-4 bg-body-tertiary fixed-top"
     >
       <div
@@ -39,11 +39,11 @@
         >
           <div class="navbar-nav link-container gap-lg-5">
                                                                  <!-- Navigation Link -->
-                <a class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/index.php">Home</a>
-                <a class="nav-link <?php echo $currentPage == 'about.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/frontend/public/about.php">About Us</a>
-                <a class="nav-link <?php echo $currentPage == 'services.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/frontend/public/services.php">Services</a>
-                <a class="nav-link <?php echo $currentPage == 'gallery.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/frontend/public/gallery.php">Gallery</a>
-                <a class="nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/frontend/public/contact.php">Contact</a>
+                <a class="nav-link <?php echo $currentPage == 'index.php' ? 'active' : ''; ?>" href="/Library/index.php">Home</a>
+                <a class="nav-link <?php echo $currentPage == 'about.php' ? 'active' : ''; ?>" href="/Library/frontend/public/about.php">About Us</a>
+                <a class="nav-link <?php echo $currentPage == 'services.php' ? 'active' : ''; ?>" href="/Library/frontend/public/services.php">Services</a>
+                <a class="nav-link <?php echo $currentPage == 'gallery.php' ? 'active' : ''; ?>" href="/Library/frontend/public/gallery.php">Gallery</a>
+                <a class="nav-link <?php echo $currentPage == 'contact.php' ? 'active' : ''; ?>" href="/Library/frontend/public/contact.php">Contact</a>
           </div>
         </div>
         <div class="d-none d-lg-flex gap-4">

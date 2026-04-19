@@ -1,5 +1,5 @@
-
-const API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
+﻿
+const API = "/Library/backend/controllers/student.php";
 let stud = []; 
 // Function to get the student record from the backend
 function get(){
@@ -48,9 +48,11 @@ function createStudentRow(student) {
      <td class="text-center">${student.email}</td>
     
     <td class="text-center">
-        <button class="btn btn-success btn-sm" style="width:60px;" onclick="edit('${student.student_id}')">Edit</button>
-        <button class="btn btn-danger btn-sm" style="width:60px;" onclick="drop(this, '${student.student_number}')">Delete</button>
-        <button class="btn btn-primary btn-sm" style="width:60px;" onclick="goToBorrow('${student.student_id}')">Borrow</button>
+        <div class="d-flex justify-content-center gap-1 flex-wrap">
+            <button class="btn btn-success btn-sm student-action-btn" onclick="edit('${student.student_id}')"><span>Edit</span></button>
+            <button class="btn btn-danger btn-sm student-action-btn" onclick="drop(this, '${student.student_number}')"><span>Delete</span></button>
+            <button class="btn btn-primary btn-sm student-action-btn" onclick="goToBorrow('${student.student_id}')"><span>Borrow</span></button>
+        </div>
     </td>
 </tr>
 `;
@@ -67,7 +69,7 @@ function goToBorrow(studentId) {
 
     const studentName = encodeURIComponent(student.name);
 
-    window.location.href = `/BSIT-2E-G1-Group4-MyLibrary/system/pages/borrow.php?student_id=${id}&student_name=${studentName}`;
+    window.location.href = `/Library/system/pages/borrow.php?student_id=${id}&student_name=${studentName}`;
 }
 // function to search student
 function handleSearch(event, redirectToBook = false) {
@@ -83,7 +85,7 @@ function handleSearch(event, redirectToBook = false) {
     if (currentPage === "student.php") {
         handleLiveStudentSearch({ target: input });
     } else {
-        window.location.href = `/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php?search=${encodeURIComponent(query)}`;
+        window.location.href = `/Library/system/pages/book.php?search=${encodeURIComponent(query)}`;
     }
 }
 window.addEventListener("DOMContentLoaded", () => {

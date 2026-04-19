@@ -1,4 +1,4 @@
-const APIR = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/register.php";
+﻿const APIR = "/Library/backend/controllers/register.php";
 
 // Event listener
 $(document).ready(function() {

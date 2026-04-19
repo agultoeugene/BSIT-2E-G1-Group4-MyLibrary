@@ -1,4 +1,4 @@
-const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+﻿const api = "/Library/backend/controllers/book.php";
 
 
 let books = [];
@@ -174,7 +174,7 @@ function handleSearch(event) {
     const currentPage = window.location.pathname.split("/").pop();
 
     if (currentPage !== "student.php") {
-        window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php?search=" + encodeURIComponent(query);
+        window.location.href = "/Library/system/pages/book.php?search=" + encodeURIComponent(query);
     }
 }
 

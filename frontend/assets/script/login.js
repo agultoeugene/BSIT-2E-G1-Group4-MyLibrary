@@ -1,5 +1,5 @@
-
-const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/login.php";
+﻿
+const api = "/Library/backend/controllers/login.php";
 // Login event listner and clear error
 $(document).ready(function() {
 
@@ -62,17 +62,18 @@ function postOne() {
            if (response.status == "success") {
            Swal.fire({
             icon: "success",
-            title: response.message,
+            title: "Login Successfully",
+            text: response.message,
             timer: 1500,
             showConfirmButton: false
         }).then(() => {
-            window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/dashboard.php";
+            window.location.href = "/Library/system/pages/dashboard.php";
         });
 
         } else {
 
             Swal.fire({
-                title: "Error!",
+                title: "Login Failed!",
                 text: response.message,
                 icon: "error"
             });
@@ -84,3 +85,4 @@ function postOne() {
 	    	  }
   })
 }
+

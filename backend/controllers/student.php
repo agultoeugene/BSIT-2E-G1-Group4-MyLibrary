@@ -257,7 +257,7 @@ if (isset($_GET['action'])) {
         $id = $_GET['id'];
 
         $stmt = $conn->prepare("SELECT COUNT(*) as count FROM student WHERE student_number = ? AND student_id != ?");
-        $stmt->bind_param("ii", $stud_number, $id);
+        $stmt->bind_param("si", $stud_number, $id);
         $stmt->execute();
 
         $result = $stmt->get_result()->fetch_assoc();

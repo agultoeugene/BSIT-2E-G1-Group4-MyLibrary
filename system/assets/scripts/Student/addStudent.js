@@ -1,4 +1,4 @@
-const api = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
+﻿const api = "/Library/backend/controllers/student.php";
 
 let students = [];
 let editRow = null;
@@ -29,7 +29,6 @@ function storeWithValidation() {
                 return;
             }
 
-  
             if (email !== "") {
                 if (!email.includes("@")) {
                     $("#errEmail").text("Invalid email format");
@@ -50,7 +49,7 @@ function store() {
 
     let fname = $("#firstName").val().trim();
     let lname = $("#lastName").val().trim();
-    let stud_number =($("#studentNumber").val().trim());
+    let stud_number = ($("#studentNumber").val().trim());
     let email = $("#email").val().trim();
     let year = $("#yearGrade").val().trim();
     let sectionId = parseInt($("#section_id").val());
@@ -59,10 +58,8 @@ function store() {
 
     let isValid = true;
 
-    // clear errors
     $("#errFirstName, #errLastName, #errStudentNumber, #errEmail, #errYearGrade, #errSection, #errCourse").text("");
 
-    // validation
     if (fname === "") {
         $("#errFirstName").text("Student Firstname is required");
         isValid = false;
@@ -95,7 +92,8 @@ function store() {
         $("#errYearGrade").text("Invalid year");
         isValid = false;
     }
-      if (isNaN(year)) {
+
+    if (isNaN(year)) {
         $("#errYearGrade").text("Invalid year");
         isValid = false;
     }
@@ -116,7 +114,7 @@ function store() {
         fname: fname,
         lname: lname,
         stud_number: stud_number,
-        email: email,  
+        email: email,
         section_id: sectionId,
         section_name: sectionName,
         year: year,
@@ -142,7 +140,7 @@ function store() {
                     text: response.message,
                     confirmButtonText: "OK"
                 }).then(() => {
-                    window.location.href = "/BSIT-2E-G1-Group4-MyLibrary/system/pages/student.php";
+                    window.location.href = "/Library/system/pages/student.php";
                 });
 
             } else {
@@ -168,7 +166,6 @@ function store() {
 }
 
 
-
 function openAddStudentModal() {
 
     clearForm();
@@ -180,10 +177,14 @@ function openAddStudentModal() {
 
     loadCourses();
 
-    let modal = new bootstrap.Modal(document.getElementById("addStudentModal"));
+    // ✅ FIX: remove stuck backdrop and reset body
+    $("body").removeClass("modal-open");
+    $(".modal-backdrop").remove();
+
+    let modalEl = document.getElementById("addStudentModal");
+    let modal = bootstrap.Modal.getOrCreateInstance(modalEl);
     modal.show();
 }
-
 
 function clearForm() {
 
@@ -208,7 +209,6 @@ $("#yearGrade").on("input", () => $("#errYearGrade").text(""));
 
 $("#course_id").on("change", () => $("#errCourse").text(""));
 $("#section_id").on("change", () => $("#errSection").text(""));
-
 
 function loadCourses() {
 

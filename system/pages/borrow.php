@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include("../../backend/config/config.php");
 requireLogin();
 ?>
@@ -153,7 +153,7 @@ requireLogin();
             <button class="btn btn-primary px-5 fw-bold" onclick="location.reload()">
                 Borrow Another Book
             </button>
-            <a href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/dashboard.php" class="btn btn-outline-secondary px-5">
+            <a href="/Library/system/pages/dashboard.php" class="btn btn-outline-secondary px-5">
                 Go to Dashboard
             </a>
         </div>

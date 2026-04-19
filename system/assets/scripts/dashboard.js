@@ -1,4 +1,4 @@
-const apid = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/dashboard.php";
+﻿const apid = "/Library/backend/controllers/dashboard.php";
 //funtion to get all the count records from db 
 function get() {
 $.ajax({

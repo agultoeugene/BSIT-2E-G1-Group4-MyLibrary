@@ -1,76 +1,42 @@
-<nav class="navbar navbar-expand-lg nav-container py-4 bg-body-tertiary fixed-top">
-  <div class="container-fluid d-flex align-items-center justify-content-between">
-
-
-    <a class="logo" href="#">My LIBRARY/</a>
-
-    <div class="d-flex align-items-center gap-2 d-lg-none">
-      <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch">
-        <i class="bi bi-search fs-5"></i>
-      </button>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-
-    <?php 
-      $currentPage = basename($_SERVER['PHP_SELF']);
-      $placeholder = "Search Book";
-      if ($currentPage == "student.php") {
-        $placeholder = "Search Student";
-      }
-    ?>
-
-    <div class="collapse navbar-collapse justify-content-center ms-3" id="navbarNavAltMarkup">
-      <div class="navbar-nav link-container mx-auto gap-5">
-        <a class="nav-link <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/dashboard.php">Dashboard</a>
-        <a class="nav-link <?php echo $currentPage == 'book.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/book.php">Books</a>
-        <a class="nav-link <?php echo $currentPage == 'student.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/student.php">Student</a>
-        <a class="nav-link <?php echo $currentPage == 'borrow.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/borrow.php">Borrow</a>
-        <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/manageBorrow.php">Manage Books</a>
-        <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
-          <a class="nav-link <?php echo $currentPage == 'account.php' ? 'active' : ''; ?>" href="/BSIT-2E-G1-Group4-MyLibrary/system/pages/account.php">Account</a>
-        <?php endif; ?>
-      </div>
-    </div>
-
-    <!-- search for book-->
-    <form class="d-none d-lg-flex align-items-stretch gap-1 ms-1" role="search" onsubmit="handleSearch(event, true)">
-      <input 
-        class="form-control" 
-        type="search"
-        placeholder="<?php echo $placeholder; ?>"
-        oninput="<?php echo $currentPage == 'student.php' ? 'handleLiveStudentSearch(event)' : 'handleLiveSearch(event)'; ?>"
-        style="min-width: 200px;"
-      >
-      <button class="btn btn-outline-primary me-2" type="submit">
-        <i class="bi bi-search"></i>
-      </button>
-      <a href="/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/logout.php" class="btn btn-danger btn-sm d-flex align-items-center px-3" onclick="return confirmLogout(event)">
-        Logout <i class="bi bi-box-arrow-right ms-1"></i>
-      </a>
-    </form>
-
-  </div>
-</nav>
-
-<div class="collapse bg-body-tertiary px-3 pb-3 pt-2 d-lg-none" id="mobileSearch">
-  <form class="d-flex flex-column gap-2" onsubmit="handleSearch(event, true)">
-    <input 
-      class="form-control" 
-      type="search" 
-      placeholder="<?php echo $placeholder; ?>"
-      oninput="<?php echo $currentPage == 'student.php' ? 'handleLiveStudentSearch(event)' : 'handleLiveSearch(event)'; ?>"
-    >
-    <button class="btn btn-outline-primary w-100" type="submit">
-      <i class="bi bi-search"></i> Search
+﻿<aside class="sidebar">
+  <div class="sidebar-header d-flex align-items-center justify-content-between">
+    <a class="logo" href="/Library/system/pages/dashboard.php">My LIBRARY</a>
+    <button class="btn btn-outline-secondary sidebar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
     </button>
-    <a href="/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/logout.php" class="btn btn-danger w-100" onclick="return confirmLogout(event)">
-      Logout <i class="bi bi-box-arrow-right ms-1"></i>
-    </a>
-  </form>
-</div>
+  </div>
+
+  <?php 
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    $placeholder = "Search Book";
+    if ($currentPage == "student.php") {
+      $placeholder = "Search Student";
+    } elseif ($currentPage == "manageBorrow.php") {
+      $placeholder = "Search Borrowed Books";
+    }
+  ?>
+
+  <div class="collapse d-lg-block" id="sidebarMenu">
+    <div class="sidebar-nav link-container">
+      <a class="nav-link <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>" href="/Library/system/pages/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+      <a class="nav-link <?php echo $currentPage == 'book.php' ? 'active' : ''; ?>" href="/Library/system/pages/book.php"><i class="bi bi-book me-2"></i>Books</a>
+      <a class="nav-link <?php echo $currentPage == 'student.php' ? 'active' : ''; ?>" href="/Library/system/pages/student.php"><i class="bi bi-people me-2"></i>Student</a>
+      <a class="nav-link <?php echo $currentPage == 'borrow.php' ? 'active' : ''; ?>" href="/Library/system/pages/borrow.php"><i class="bi bi-journal-plus me-2"></i>Borrow</a>
+      <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' && !isset($_GET['view']) ? 'active' : ''; ?>" href="/Library/system/pages/manageBorrow.php"><i class="bi bi-journal-bookmark me-2"></i>Manage Books</a>
+      <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' && isset($_GET['view']) && $_GET['view'] === 'returned' ? 'active' : ''; ?>" href="/Library/system/pages/manageBorrow.php?view=returned"><i class="bi bi-arrow-counterclockwise me-2"></i>Returned Books</a>
+      <a class="nav-link <?php echo $currentPage == 'manageBorrow.php' && isset($_GET['view']) && $_GET['view'] === 'overdue' ? 'active' : ''; ?>" href="/Library/system/pages/manageBorrow.php?view=overdue"><i class="bi bi-clock-history me-2"></i>Late Returned</a>
+      <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+        <a class="nav-link <?php echo $currentPage == 'account.php' ? 'active' : ''; ?>" href="/Library/system/pages/account.php"><i class="bi bi-person-badge me-2"></i>Account</a>
+      <?php endif; ?>
+    </div>
+
+    <div class="sidebar-footer mt-4 px-3">
+      <a href="/Library/backend/controllers/logout.php" class="btn btn-danger w-100 logout-btn d-flex align-items-center justify-content-center" onclick="return confirmLogout(event)">
+        <i class="bi bi-box-arrow-right me-1"></i> Logout
+      </a>
+    </div>
+  </div>
+</aside>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

@@ -1,6 +1,6 @@
-// API endpoints for students and books
-const STUDENT_API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/student.php";
-const BOOK_API = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+﻿// API endpoints for students and books
+const STUDENT_API = "/Library/backend/controllers/student.php";
+const BOOK_API = "/Library/backend/controllers/book.php";
 
 // Arrays to store students and books from database
 let students = [];
@@ -296,7 +296,7 @@ const payload = {
 
 $.ajax({
 
-    url: "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/transaction.php",
+    url: "/Library/backend/controllers/transaction.php",
     type: "POST",
 
     data: { 

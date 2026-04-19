@@ -20,12 +20,19 @@ requireLogin();
 <body>
   <?php include("../includes/navigation.php");?>
      <div class="container mt-1 pt-1 page-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h3>Book List</h3>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBookModal" style="white-space:nowrap;">
           Add Book
         </button>
         </div>
+
+        <form class="mb-3" onsubmit="handleSearch(event)">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control" placeholder="Search book" aria-label="Search book" oninput="handleLiveSearch(event)">
+            </div>
+        </form>
 
         <div class="row g-4" id="bookContainer"></div>
     </div>

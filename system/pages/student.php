@@ -11,19 +11,48 @@ requireLogin();
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="../assets/css/nav.css" />
+    <style>
+        .student-action-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-width: 64px;
+            padding: 0.35rem 0.75rem;
+            white-space: nowrap;
+        }
+        .student-action-btn span {
+            display: inline-block;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .page-content .btn-sm {
+                padding: 0.35rem 0.85rem;
+                font-size: 0.82rem;
+            }
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
 </head>
 <body>
      <?php include("../includes/navigation.php");?>
        <div class="container mt-1 pt-1 page-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
             <h3>Student List</h3>
-            <button class="btn btn-primary" onclick="openAddStudentModal()">Add New Student</button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openAddStudentModal()" style="white-space:nowrap;">Add New Student</button>
         </div>
 
-      <table class="table table-bordered">
-    <thead class="table-primary">
+        <form class="mb-3" onsubmit="handleSearch(event)">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control" placeholder="Search student" aria-label="Search student" oninput="handleLiveStudentSearch(event)">
+            </div>
+        </form>
+
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-primary">
         <tr>
             <th class="text-center">Name</th>
             <th class="text-center">Student Number</th>
@@ -40,9 +69,10 @@ requireLogin();
 
 
     </div>
+</div>
 
-    <!-- Add Student Modal -->
-    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
@@ -117,27 +147,26 @@ requireLogin();
 
                 <input type="hidden" id="studentId">
             </div>
+        </div>
 
                 <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                                     <!-- Add and edit button -->
-                        <button class="btn btn-primary" id="addBtn" onclick="storeWithValidation()">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="white-space:nowrap;">Cancel</button>
+                        <button type="button" class="btn btn-primary btn-sm" id="addBtn" onclick="storeWithValidation()" style="white-space:nowrap; padding:0.45rem 0.9rem;">
                             Add Student
                         </button>
-
-                        <button class="btn btn-success" id="saveBtn" onclick="update()" style="display:none;">
+                        <button type="button" class="btn btn-success btn-sm" id="saveBtn" onclick="update()" style="display:none; white-space:nowrap; padding:0.45rem 0.9rem;">
                             Save Changes
                         </button>
                 </div>
-
+            </div>
             </div>
         </div>
     </div>
-</body>
-   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/scripts/Student/addStudent.js"></script>
     <script src="../assets/scripts/Student/displayStudent.js"></script>
     <script src="../assets/scripts/Student/deleteStudent.js"></script>
-     <script src="../assets/scripts/Student/editStudent.js"></script>
+    <script src="../assets/scripts/Student/editStudent.js"></script>
+</body>
 </html>

@@ -35,33 +35,39 @@ if ($_SESSION['role'] != 'Admin') {
 
   <h1 class="mb-4 text-primary text-center">Accounts</h1>
 
-  <!-- Create Account Button -->
-  <div class="d-flex justify-content-end mb-3">
-    <button 
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#createAccountModal"
-    >
-      Create Account
-    </button>
+  <div class="row mb-3">
+    <div class="col-md-6 mb-2">
+      <input id="searchAccountInput" type="search" class="form-control" placeholder="Search accounts..." aria-label="Search accounts">
+    </div>
+    <div class="col-md-6 text-md-end">
+      <button 
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#createAccountModal"
+      >
+        Create Account
+      </button>
+    </div>
   </div>
 
   <!-- Accounts Table -->
-  <table class="table table-bordered table-hover text-center">
-    <thead class="table-primary">
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-primary">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-    <tbody id="accountsTable">
-    </tbody>
+      <tbody id="accountsTable">
+      </tbody>
 
-  </table>
+    </table>
+  </div>
 
 </div>
 
@@ -127,6 +133,33 @@ if ($_SESSION['role'] != 'Admin') {
 
       </div>
 
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Change Password</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="changePasswordForm">
+          <input type="hidden" id="changePasswordAccountId">
+          <div class="mb-2">
+            <label class="form-label">New Password</label>
+            <input id="newPassword" type="password" class="form-control">
+            <small id="errNewPassword" class="text-danger"></small>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Confirm New Password</label>
+            <input id="confirmNewPassword" type="password" class="form-control">
+            <small id="errConfirmNewPassword" class="text-danger"></small>
+          </div>
+          <button type="submit" class="btn btn-success w-100 mt-3">Save Password</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

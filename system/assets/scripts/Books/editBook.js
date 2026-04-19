@@ -1,4 +1,4 @@
-const apiE = "/BSIT-2E-G1-Group4-MyLibrary/backend/controllers/book.php";
+﻿const apiE = "/Library/backend/controllers/book.php";
 let isEdit = false;
 // Function to edit book
 function editBook(id) {
@@ -26,7 +26,7 @@ function editBook(id) {
     $("#availability").val(book.availability || "Available");
 
    $("#originalCover").val(book.cover || ""); 
-$("#coverPreview").attr("src", book.cover ? book.cover : "/BSIT-2E-G1-Group4-MyLibrary/system/assets/scripts/Books/placeholderimg/placeholder.png");
+$("#coverPreview").attr("src", book.cover ? book.cover : "/Library/system/assets/scripts/Books/placeholderimg/placeholder.png");
 
 
     let modal = new bootstrap.Modal(document.getElementById('addBookModal'));
@@ -178,7 +178,7 @@ $('#addBookModal').on('show.bs.modal', function () {
         $("#quantity").val("");
         $("#description").val("");
         $("#availability").val("Available");
-        $("#coverPreview").attr("src", "/BSIT-2E-G1-Group4-MyLibrary/system/assets/scripts/Books/placeholderimg/placeholder.png");
+        $("#coverPreview").attr("src", "/Library/system/assets/scripts/Books/placeholderimg/placeholder.png");
         $("#originalCover").val("");
     }
 });

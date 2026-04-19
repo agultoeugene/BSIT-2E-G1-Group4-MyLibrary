@@ -40,7 +40,7 @@
           </div>
           <div class="col-lg-6 text-center mt-4 mt-lg-0">
             <img
-              src="https://static.vecteezy.com/system/resources/previews/060/264/719/non_2x/stack-of-books-illustration-free-png.png"
+              src="logo1.png"
               class="img-fluid book-img"
               alt="Stack of Books"
             />
